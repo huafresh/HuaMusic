@@ -1,16 +1,13 @@
 package hua.music.huamusic.wrapper.recyclerview
 
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.support.annotation.LayoutRes
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-
-import java.util.ArrayList
+import kotlin.RuntimeException
 
 /**
  * recyclerView通用多类型适配器
@@ -19,31 +16,23 @@ import java.util.ArrayList
  * @date 2017/8/14
  */
 
-abstract class MultiItemRvAdapter<T>(val mContext: Context)
+abstract class MultiItemRvAdapter<T>(private val mContext: Context)
     : RecyclerView.Adapter<MyViewHolder>() {
 
     companion object {
         private val TAG = "MultiItemRvAdapter"
     }
 
-    var mDataList: MutableList<T>? = null
-
-    private var mOnItemClickListener: OnItemClickListener? = null
-    private var mOnItemLongClickListener: OnItemLongClickListener? = null
-    private var mOnTouchListener: OnTouchListener? = null
+    private val mDataList: MutableList<T> = mutableListOf()
 
     /**
      * 设置适配器数据源
-     *
      * @param list 适配器数据源
      */
     fun setDataList(list: List<T>?) {
         if (list != null) {
-            if (mDataList == null) {
-                mDataList = ArrayList()
-            }
-            mDataList?.clear()
-            mDataList?.addAll(list)
+            mDataList.clear()
+            mDataList.addAll(list)
         }
     }
 
@@ -53,18 +42,37 @@ abstract class MultiItemRvAdapter<T>(val mContext: Context)
      * @param <T>
      * @return 适配器数据源
      */
-    fun getDataList(): List<T>? {
+    fun getDataList(): List<T> {
         return mDataList
     }
 
+    /**
+     * 针对item的监听
+     */
+    private var mOnItemClickListener: ((view: View, position: Int) -> Unit)? = null
+    private var mOnItemLongClickListener: ((view: View, position: Int) -> Unit)? = null
+    private var mOnItemTouchListener: ((view: View, event: MotionEvent, position: Int) -> Boolean)? = null
+
+    public fun setOnItemClickListener(listener: (view: View, position: Int) -> Unit) {
+        mOnItemClickListener = listener
+    }
+
+    public fun setOnItemLongClickListener(listener: (view: View, position: Int) -> Unit) {
+        mOnItemLongClickListener = listener
+    }
+
+    public fun setOnTouchListener(listener: (view: View, event: MotionEvent, position: Int) -> Boolean) {
+        mOnItemTouchListener = listener
+    }
+
     override fun getItemCount(): Int {
-        return mDataList?.size ?: 0
+        return mDataList.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutId = getLayoutId(parent, viewType)
-        if (layoutId == -1) {
-            throw IllegalArgumentException("no layoutId was setted")
+        if (layoutId <= 0) {
+            throw RuntimeException("invalid layout id")
         }
         val itemView = LayoutInflater.from(mContext).inflate(layoutId, parent, false)
         val holder = MyViewHolder(itemView)
@@ -73,73 +81,23 @@ abstract class MultiItemRvAdapter<T>(val mContext: Context)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val itemData: T? = mDataList?.get(position)
+        val itemData: T? = mDataList[position]
         multiConvert(holder, itemData, position)
     }
 
     private fun setListeners(itemView: View, myViewHolder: MyViewHolder) {
         itemView.setOnClickListener { v ->
-            if (mOnItemClickListener != null) {
-                mOnItemClickListener!!.onClick(v, myViewHolder.layoutPosition)
-            }
+            mOnItemClickListener?.invoke(v, myViewHolder.adapterPosition)
         }
 
         itemView.setOnLongClickListener { v ->
-            if (mOnItemLongClickListener != null) {
-                mOnItemLongClickListener!!.onLongClick(v, myViewHolder.layoutPosition)
-            }
+            mOnItemLongClickListener?.invoke(v, myViewHolder.adapterPosition)
             true
         }
 
         itemView.setOnTouchListener { v, event ->
-            if (mOnTouchListener != null) {
-                mOnTouchListener!!.onTouch(v, event, myViewHolder.layoutPosition)
-            } else false
+            mOnItemTouchListener?.invoke(v, event, myViewHolder.adapterPosition) ?: false
         }
-    }
-
-    fun setOnItemClickListener(listener: OnItemClickListener) {
-        mOnItemClickListener = listener
-    }
-
-    interface OnItemClickListener {
-        /**
-         * item被点击时调用
-         *
-         * @param view     被点击的item
-         * @param position item的位置
-         */
-        fun onClick(view: View, position: Int)
-    }
-
-    fun setOnItemLongClickListener(listener: OnItemLongClickListener) {
-        mOnItemLongClickListener = listener
-    }
-
-    interface OnItemLongClickListener {
-        /**
-         * item被长按时调用
-         *
-         * @param view     被长按的item
-         * @param position item的位置
-         */
-        fun onLongClick(view: View, position: Int)
-    }
-
-    interface OnTouchListener {
-        /**
-         * item被触摸时调用
-         *
-         * @param v        被触摸的item
-         * @param event    触摸事件
-         * @param position item的位置
-         * @return 是否消费
-         */
-        fun onTouch(v: View, event: MotionEvent, position: Int): Boolean
-    }
-
-    fun setOnTouchListener(listener: OnTouchListener) {
-        mOnTouchListener = listener
     }
 
 

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">HuaMusic</string>
+
+    <string name="local">本地音乐</string>
+    <string name="recent">最近播放</string>
+    <string name="down">下载管理</string>
 </resources>

@@ -15,7 +15,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <!--<activity android:name=".TestActivity"/>-->
+
+        <activity
+            android:name=".pages.local.LocalActivity"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

@@ -1,27 +1,30 @@
 package hua.music.huamusic
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v7.widget.Toolbar
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
 import android.widget.FrameLayout
-import android.widget.Toast
+import hua.music.huamusic.base.BaseActivity
+import hua.music.huamusic.home.HomeFragment
+import hua.music.huamusic.views.MusicController
 import kotterknife.bindView
 
-class MainActivity : AppCompatActivity() {
-    private val viewHeader: View by bindView(R.id.view_header)
-    private val bacLeftMenu: View by bindView(R.id.bac_left_menu)
-    private val bacSearch: View by bindView(R.id.bac_search)
-    private val flContent: FrameLayout by bindView(R.id.fl_content)
-    private val flMusicController: FrameLayout by bindView(R.id.fl_music_controller)
+class MainActivity : BaseActivity() {
 
-    //val nameEditText: View by bindView(R.id.view_header)
+    override fun initToolBar(toolbar: Toolbar) {
+        val toolBarChild = LayoutInflater.from(this).
+                inflate(R.layout.main_tool_bar, toolbar, false)
+        toolbar.addView(toolBarChild)
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun onCreateContent(): Fragment? {
+        return HomeFragment()
+    }
 
+    override fun onCreateMusicController(): View? {
+        return MusicController().getView(this)
     }
 
 }
