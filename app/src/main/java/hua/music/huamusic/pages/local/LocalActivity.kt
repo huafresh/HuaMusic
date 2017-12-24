@@ -1,12 +1,13 @@
 package hua.music.huamusic.pages.local
 
-import android.app.Activity
-import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.Toolbar
 import android.view.Menu
-import android.view.MenuItem
+import android.view.View
 import hua.music.huamusic.R
 import hua.music.huamusic.base.BaseActivity
+import hua.music.huamusic.utils.CommonUtil
+import hua.music.huamusic.views.ViewFactory
 
 /**
  * 本地音乐界面
@@ -19,16 +20,18 @@ class LocalActivity : BaseActivity() {
 
     override fun initToolBar(toolbar: Toolbar) {
         setSupportActionBar(toolbar)
-        toolbar.setNavigationIcon(R.mipmap.ic_launcher)
-        toolbar.title = getString(R.string.local)
+        toolbar.setNavigationIcon(R.drawable.icon_back)
+        toolbar.title = getString(R.string.menu_local)
+        toolbar.overflowIcon = CommonUtil.getDrawable(this, R.drawable.actionbar_more, null)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val itemSearch = MenuItem()
-        menu.add
+        menuInflater.inflate(R.menu.menu_local, menu)
+        return true
+    }
 
-        super.onCreateOptionsMenu(menu)
-
+    override fun onCreateContent(): Fragment? {
+        return LocalFragment()
     }
 
 }

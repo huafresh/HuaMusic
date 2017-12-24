@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import hua.music.huamusic.R
+import hua.music.huamusic.data.MusicLiveModel
 import hua.music.huamusic.entitys.MenuEntity
 import hua.music.huamusic.entitys.SongListEntity
 import hua.music.huamusic.utils.CommonUtil
@@ -40,9 +41,9 @@ class HomeFragment : Fragment() {
             R.mipmap.ic_launcher,
             R.mipmap.ic_launcher)
     private val mMenuNames = intArrayOf(
-            R.string.local,
-            R.string.recent,
-            R.string.down)
+            R.string.menu_local,
+            R.string.menu_recent,
+            R.string.menu_down)
     private val mMenuTypes = arrayOf(
             JumpUtil.ACTIVITY_TYPE_LOCAL,
             JumpUtil.ACTIVITY_TYPE_RECENT,

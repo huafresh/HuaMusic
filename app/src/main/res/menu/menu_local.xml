@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/action_search"
+        android:title="@string/action_local_search"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/scan"
+        android:icon="@drawable/action_scan"
+        android:title="@string/action_local_scan"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/order"
+        android:icon="@drawable/action_order"
+        android:title="@string/action_local_order"
+        app:showAsAction="never"/>
+</menu>

@@ -4,11 +4,12 @@ import android.content.Context
 import android.view.View
 
 /**
+ * 视图工厂接口
  * @author hua
  * @version 2017/12/22 17:35
  *
  */
-interface IView {
+interface IViewFactory {
 
     /**
      * 获取视图

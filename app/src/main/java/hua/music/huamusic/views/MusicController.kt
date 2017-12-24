@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import hua.music.huamusic.R
 
 /**
@@ -12,20 +13,21 @@ import hua.music.huamusic.R
  * @version 2017/12/22 17:34
  *
  */
-class MusicController : IView {
+class MusicController : IViewFactory {
 
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var mView: View? = null
     }
 
-    private var mContent: Context? = null
-
     override fun getView(context: Context): View {
         if (mView == null) {
-            mContent = context.applicationContext
-            val inflater = LayoutInflater.from(mContent)
+            val inflater = LayoutInflater.from(context.applicationContext)
             mView = inflater.inflate(R.layout.music_controller, null, false)
+        }
+        val parent = mView?.parent
+        if (parent != null && parent is ViewGroup) {
+            parent.removeView(mView)
         }
         return mView!!
     }

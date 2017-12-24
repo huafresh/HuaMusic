@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import hua.music.huamusic.base.BaseActivity
@@ -21,10 +22,6 @@ class MainActivity : BaseActivity() {
 
     override fun onCreateContent(): Fragment? {
         return HomeFragment()
-    }
-
-    override fun onCreateMusicController(): View? {
-        return MusicController().getView(this)
     }
 
 }

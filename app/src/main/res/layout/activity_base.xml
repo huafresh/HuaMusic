@@ -9,7 +9,8 @@
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/color_theme"/>
+        android:background="@color/color_theme">
+    </android.support.v7.widget.Toolbar>
 
     <!--<View-->
         <!--android:id="@+id/bac_back"-->

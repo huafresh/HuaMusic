@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.FrameLayout
 import hua.music.huamusic.R
 import hua.music.huamusic.home.HomeFragment
+import hua.music.huamusic.views.ViewFactory
 import kotterknife.bindView
 
 /**
@@ -80,7 +81,7 @@ open class BaseActivity : AppCompatActivity() {
      * 创建音乐控制器
      */
     open protected fun onCreateMusicController(): View? {
-        return null
+        return ViewFactory.createView(this, ViewFactory.TYPE_MUSIC_CONTROLLER)
     }
 
     /**

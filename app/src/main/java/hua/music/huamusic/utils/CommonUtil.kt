@@ -4,10 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Build
 import android.support.annotation.ColorRes
+import android.support.annotation.DrawableRes
 import android.support.annotation.IdRes
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
@@ -111,6 +113,20 @@ object CommonUtil {
             context.resources.getColor(color, theme)
         } else {
             context.resources.getColor(color)
+        }
+    }
+
+    /**
+     * 获取图片资源id对应的图片，主要是兼容高版本
+     *
+     * @return Drawable
+     */
+    fun getDrawable(context: Context, @DrawableRes color: Int,
+                    theme: Resources.Theme?): Drawable {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            context.resources.getDrawable(color, theme)
+        } else {
+            context.resources.getDrawable(color)
         }
     }
 
