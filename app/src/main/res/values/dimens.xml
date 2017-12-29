@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--可点击图片的背景宽度-->
     <dimen name="click_width">50dp</dimen>
+    <!--listView的高度-->
+    <dimen name="list_view_height">55dp</dimen>
+
+    <!--字体大小-->
+    <dimen name="text_size_big">25sp</dimen>
+    <dimen name="text_size_big2">22sp</dimen>
+    <dimen name="text_size_middle">16sp</dimen>
+    <dimen name="text_size_middle2">15sp</dimen>
+    <dimen name="text_size_small">10sp</dimen>
+    <dimen name="text_size_small2">11sp</dimen>
+    <dimen name="text_size_small3">13sp</dimen>
+    <dimen name="text_size_small4">14sp</dimen>
+
 </resources>

@@ -82,7 +82,9 @@ abstract class MultiItemRvAdapter<T>(private val mContext: Context)
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val itemData: T? = mDataList[position]
-        multiConvert(holder, itemData, position)
+        if (itemData != null) {
+            multiConvert(holder, itemData, position)
+        }
     }
 
     private fun setListeners(itemView: View, myViewHolder: MyViewHolder) {
@@ -119,7 +121,7 @@ abstract class MultiItemRvAdapter<T>(private val mContext: Context)
      * @param data     item对应的bean
      * @param position item位置
      */
-    abstract fun multiConvert(holder: MyViewHolder, data: T?, position: Int)
+    abstract fun multiConvert(holder: MyViewHolder, data: T, position: Int)
 
 
 }

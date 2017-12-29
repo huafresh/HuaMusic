@@ -17,8 +17,8 @@ abstract class SingleRvAdapter<T>(mContext: Context, @LayoutRes layoutId: Int) :
 
     private val mLayoutId: Int = layoutId
 
-    override fun multiConvert(holder: MyViewHolder, data: T?, position: Int) {
-        convert(holder, data, position);
+    override fun multiConvert(holder: MyViewHolder, data: T, position: Int) {
+        convert(holder, data, position)
     }
 
     override fun getLayoutId(parent: ViewGroup, viewType: Int): Int {
@@ -32,6 +32,6 @@ abstract class SingleRvAdapter<T>(mContext: Context, @LayoutRes layoutId: Int) :
      * @param data     bean
      * @param position item位置
      */
-    protected abstract fun convert(holder: MyViewHolder, data: T?, position: Int)
+    protected abstract fun convert(holder: MyViewHolder, data: T, position: Int)
 
 }

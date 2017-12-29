@@ -7,7 +7,7 @@ package hua.music.huamusic.entitys
  *
  */
 data class AuthorEntity(
-        var name: String, //歌手名称
-        var cover: String, //头像url
-        var sum: Int //歌曲数目
+        var name: String?, //歌手名称
+        var cover: String?, //头像url
+        var sum: Int? //歌曲数目
 )

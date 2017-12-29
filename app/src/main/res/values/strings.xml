@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HuaMusic</string>
+    <string name="app_name">华创音乐</string>
 
     <!--首页菜单-->
     <string name="menu_local">本地音乐</string>
@@ -28,5 +28,9 @@
     <!--下载管理tab-->
     <string name="down_tab_downed">已下载</string>
     <string name="down_tab_downing">下载中</string>
+
+    <!--无本地音乐提示-->
+    <string name="no_music">暂无本地音乐</string>
+    <string name="no_music_button">一键扫描</string>
 
 </resources>

@@ -8,14 +8,18 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
         app:tabIndicatorColor="@color/color_theme"
-        app:tabTextColor="@color/color_text"
-        app:tabSelectedTextColor="@color/color_theme"/>
+        app:tabTextColor="@color/text_color"
+        app:tabSelectedTextColor="@color/color_theme"
+        android:background="@color/bac_color"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/tab_layout"/>
+        android:layout_height="0dp"
+        android:background="@color/bac_color_2"
+        app:layout_constraintTop_toBottomOf="@id/tab_layout"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 </android.support.constraint.ConstraintLayout>

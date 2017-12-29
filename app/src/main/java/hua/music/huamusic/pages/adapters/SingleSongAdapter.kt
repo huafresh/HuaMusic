@@ -10,12 +10,13 @@ import hua.music.huamusic.wrapper.recyclerview.SingleRvAdapter
  * 本地音乐单曲列表适配器
  * Created by hua on 2017/12/23.
  */
-class LocalSingleSongAdapter(context: Context, layoutId: Int) :
+class SingleSongAdapter(context: Context, layoutId: Int) :
         SingleRvAdapter<Music>(context, layoutId) {
 
-    constructor(context: Context):this(context, R.layout.item_music)
+    constructor(context: Context) : this(context, R.layout.item_music)
 
-    override fun convert(holder: MyViewHolder, data: Music?, position: Int) {
-
+    override fun convert(holder: MyViewHolder, data: Music, position: Int) {
+        holder.setText(R.id.tv_title, data.title ?: "未知歌名")
+        holder.setText(R.id.tv_author, data.author ?: "未知歌手")
     }
 }

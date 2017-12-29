@@ -5,6 +5,20 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="color_theme">#ffd33a31</color>
-    <color name="color_text">#ff111214</color>
-    <color name="color_text2">#7f000000</color>
+
+    <!--分割线颜色-->
+    <color name="color_divider">#12aaaaaa</color>
+
+    <!--文本的颜色-->
+    <color name="text_color">#ff333333</color>
+
+    <!--稍暗文本的颜色-->
+    <color name="text_color2">#888</color>
+
+    <!--背景的颜色-->
+    <color name="bac_color">#f2f4f5</color>
+
+    <!--稍暗背景的颜色-->
+    <color name="bac_color_2">#ffe6e8e9</color>
+
 </resources>

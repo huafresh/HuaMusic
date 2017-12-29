@@ -12,7 +12,7 @@ import hua.music.huamusic.pages.adapters.CommonPagerAdapter
 import kotterknife.bindView
 
 /**
- * 本地音乐内容主界面
+ * 本地音乐内容Fragment
  * Created by hua on 2017/12/23.
  */
 class LocalFragment : Fragment() {

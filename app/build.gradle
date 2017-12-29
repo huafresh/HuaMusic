@@ -31,9 +31,11 @@ dependencies {
     implementation('com.jakewharton:kotterknife:0.1.0-SNAPSHOT') {
         exclude group: 'com.android.support'
     }
-    //jackson
-    implementation files('libs/jackson-core-2.2.1.jar')
-    implementation files('libs/jackson-databind-2.2.1.jar')
+    //rxjava2
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.5'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //jackson(纯正的jar包不好下载，因此使用这个retrofit的版本，后续可能也会用得上)
+    implementation 'com.squareup.retrofit2:converter-jackson:2.3.0'
 }
 
 repositories {

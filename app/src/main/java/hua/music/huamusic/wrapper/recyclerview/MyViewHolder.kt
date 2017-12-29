@@ -1,5 +1,6 @@
 package hua.music.huamusic.wrapper.recyclerview
 
+import android.graphics.drawable.Drawable
 import android.support.annotation.DrawableRes
 import android.support.annotation.IdRes
 import android.support.v7.widget.RecyclerView
@@ -72,8 +73,13 @@ class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     fun setImageResId(@IdRes id: Int, @DrawableRes imgId: Int): MyViewHolder {
-        val ImageView = getView<ImageView>(id)
-        ImageView?.setImageResource(imgId)
+        val imageView = getView<ImageView>(id)
+        imageView?.setImageResource(imgId)
+        return this
+    }
+    fun setImageDrawable(@IdRes id: Int, drawable: Drawable): MyViewHolder {
+        val imageView = getView<ImageView>(id)
+        imageView?.setImageDrawable(drawable)
         return this
     }
 

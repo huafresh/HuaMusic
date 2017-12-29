@@ -10,11 +10,12 @@ import hua.music.huamusic.pages.recent.RecentActivity
 
 /**
  * Activity跳转中心
+ *
  * @author hua
  * @version 2017/12/22 9:48
  *
  */
-object JumpUtil{
+object JumpUtil {
 
     /**
      * 页面类型

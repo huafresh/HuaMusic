@@ -15,6 +15,7 @@ import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
+import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.DisplayMetrics
@@ -26,6 +27,7 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import hua.music.huamusic.R
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -37,6 +39,17 @@ import java.util.regex.Pattern
  * @date 2017/6/8
  */
 object CommonUtil {
+
+    /**
+     * 把资源图片着成给定的颜色。
+     * 主要是有些图片资源找不到。
+     */
+    fun tintDrawable(context: Context, resId: Int, color: Int): Drawable {
+        val drawable = getDrawable(context, resId, null)
+        val wrap = DrawableCompat.wrap(drawable).mutate()
+        DrawableCompat.setTint(wrap, color)
+        return wrap
+    }
 
     /**
      * 设置状态栏颜色。需要4.4以上，否则无法设置。

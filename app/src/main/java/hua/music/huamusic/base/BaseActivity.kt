@@ -3,6 +3,7 @@ package hua.music.huamusic.base
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
+import android.support.annotation.CallSuper
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -10,6 +11,7 @@ import android.view.View
 import android.widget.FrameLayout
 import hua.music.huamusic.R
 import hua.music.huamusic.home.HomeFragment
+import hua.music.huamusic.utils.CommonUtil
 import hua.music.huamusic.views.ViewFactory
 import kotterknife.bindView
 
@@ -46,8 +48,13 @@ open class BaseActivity : AppCompatActivity() {
     /**
      * 初始化ToolBar时调用
      */
+    @CallSuper
     open protected fun initToolBar(toolbar: Toolbar) {
-
+        toolbar.setNavigationIcon(R.drawable.icon_back)
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
+        toolbar.setTitleTextColor(CommonUtil.getColor(this, android.R.color.white, null))
     }
 
     private fun initContent() {

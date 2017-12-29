@@ -6,19 +6,20 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import hua.music.huamusic.base.CallBack
+import hua.music.huamusic.entitys.AlbumEntity
+import hua.music.huamusic.entitys.AuthorEntity
+import hua.music.huamusic.entitys.DirEntity
 import hua.music.huamusic.entitys.Music
+import io.reactivex.Flowable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.util.concurrent.ThreadPoolExecutor
 
 /**
- * 数据来源实现
+ * 音乐数据来源实现
+ *
  * Created by hua on 2017/12/24.
  */
 class DataSourceImpl private constructor() : IDataSource {
-
-    private val mThreadPool: ExecutorService = Executors.newCachedThreadPool()
-    private val mMainHandler = Handler(Looper.getMainLooper())
 
     private object Holder {
         val sInstance = DataSourceImpl()
@@ -30,24 +31,18 @@ class DataSourceImpl private constructor() : IDataSource {
         }
     }
 
-    override fun scanLocalMusicList(context: Context, callBack: CallBack<List<Music>>) {
-        mThreadPool.submit({
-            var list: List<Music>? = null
-            try {
-                list = getMusicListFromProvider(context)
-            } catch (e: Exception) {
-                mMainHandler.post { callBack.onFailed(e) }
-            }
-            if (list == null) {
-                mMainHandler.post { callBack.onFailed(Exception("未知异常")) }
-            } else {
-                mMainHandler.post { callBack.onSuccess(list) }
-            }
-        })
+    override fun getSingleSongList(context: Context): List<Music>? {
+        return try {
+            val list = getLocalMusicListFromProvider(context)
+            list
+        } catch (e: Exception) {
+            MusicLiveModel.getInstance().toastLiveData.value = e.message
+            null
+        }
     }
 
     @SuppressLint("Recycle")
-    private fun getMusicListFromProvider(context: Context): List<Music> {
+    private fun getLocalMusicListFromProvider(context: Context): List<Music> {
         val resolver = context.contentResolver
         val cursor = resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 null, null, null,
@@ -64,8 +59,10 @@ class DataSourceImpl private constructor() : IDataSource {
                 val fileSize = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE))
                 val filePath = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA))
                 val fileName = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME))
-                val fileDir = filePath.substring(0, filePath.length - fileName.length - 1)
-                val music = Music(title, author, filePath, fileDir, album, null)
+                val fileDir = filePath.substring(0, filePath.length - fileName.length)
+                val arrays = fileDir.split("/")
+                val dirName = arrays[arrays.size - 2]
+                val music = Music(title, author, filePath, fileDir, dirName, album, null)
                 list.add(music)
             }
         }

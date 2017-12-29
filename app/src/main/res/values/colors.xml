@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">@color/color_theme</color>
+    <color name="colorPrimaryDark">@color/color_theme</color>
+    <color name="colorAccent">@color/color_theme</color>
 
     <color name="color_theme">#ffd33a31</color>
-    <color name="color_text">#ff111214</color>
-    <color name="color_text2">#7f000000</color>
-    <color name="color_divider">#33000000</color>
+
+    <!--分割线颜色-->
+    <color name="color_divider">#e3e3e3</color>
+
+    <!--文本的颜色-->
+    <color name="text_color">#ff333333</color>
+
+    <!--稍暗文本的颜色-->
+    <color name="text_color2">#888</color>
+
+    <!--背景的颜色-->
+    <color name="bac_color">#f2f4f5</color>
+
+    <!--稍暗背景的颜色-->
+    <color name="bac_color_2">#ffe6e8e9</color>
+
 </resources>

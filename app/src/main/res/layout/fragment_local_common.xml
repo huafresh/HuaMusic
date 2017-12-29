@@ -8,4 +8,10 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <include
+        android:id="@+id/include_no_data"
+        layout="@layout/include_no_local_music"
+        android:visibility="gone"/>
+
 </android.support.constraint.ConstraintLayout>

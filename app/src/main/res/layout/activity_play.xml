@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/view_header"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
+    <View
+        android:id="@+id/bac_back"
+        android:layout_width="@dimen/click_width"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/view_header"
+        app:layout_constraintTop_toTopOf="@id/view_header"/>
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_back"
+        app:layout_constraintBottom_toBottomOf="@id/bac_back"
+        app:layout_constraintLeft_toLeftOf="@id/bac_back"
+        app:layout_constraintRight_toRightOf="@id/bac_back"
+        app:layout_constraintTop_toTopOf="@id/bac_back"/>
+
+    <View
+        android:id="@+id/bac_share"
+        android:layout_width="@dimen/click_width"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/view_header"
+        app:layout_constraintRight_toRightOf="@id/view_header"
+        app:layout_constraintTop_toTopOf="@id/view_header"/>
+
+    <ImageView
+        android:id="@+id/iv_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_share"
+        app:layout_constraintBottom_toBottomOf="@id/bac_share"
+        app:layout_constraintLeft_toLeftOf="@id/bac_share"
+        app:layout_constraintRight_toRightOf="@id/bac_share"
+        app:layout_constraintTop_toTopOf="@id/bac_share"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="你还要我怎样"
+        app:layout_constraintBottom_toTopOf="@+id/tv_author"
+        app:layout_constraintLeft_toRightOf="@id/bac_back"
+        app:layout_constraintTop_toTopOf="@id/view_header"
+        app:layout_constraintVertical_chainStyle="packed"/>
+
+    <TextView
+        android:id="@+id/tv_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="薛之谦"
+        app:layout_constraintBottom_toBottomOf="@id/view_header"
+        app:layout_constraintLeft_toRightOf="@id/bac_back"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"/>
+
+    <View
+        android:id="@+id/tv_lrc_textView"
+        android:layout_width="match_parent"
+        android:layout_height="340dp"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/view_header"/>
+
+    <View
+        android:id="@+id/bac_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_lrc_textView"/>
+
+    <!--这里添加喜欢、下载、评论等列表-->
+
+    <View
+        android:id="@+id/bac_seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        app:layout_constraintTop_toBottomOf="@id/bac_buttons"/>
+
+    <TextView
+        android:id="@+id/tv_time_current"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:02"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/seek_bar"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintTop_toTopOf="@id/bac_seek_bar"
+        app:layout_constraintBottom_toBottomOf="@id/bac_seek_bar"/>
+
+    <SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="200dp"
+        app:layout_constraintLeft_toRightOf="@id/tv_time_current"
+        app:layout_constraintRight_toLeftOf="@+id/tv_time_total"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_time_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/seek_bar"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="04:12"/>
+
+    <View
+        android:id="@+id/bac_controller"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iv_play_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/loop"/>
+    <ImageView
+        android:id="@+id/iv_previous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/previous"/>
+    <ImageView
+        android:id="@+id/iv_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/play"/>
+    <ImageView
+        android:id="@+id/iv_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/next"/>
+    <ImageView
+        android:id="@+id/iv_play_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/loop"/>
+
+</android.support.constraint.ConstraintLayout>

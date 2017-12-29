@@ -7,7 +7,7 @@ package hua.music.huamusic.entitys
  *
  */
 data class DirEntity(
-        var name: String, //文件夹名称
-        var sum: Int, //歌曲数目
-        var path: String //文件夹路径
+        var name: String?, //文件夹名称
+        var path: String?, //文件夹路径
+        var sum: Int? //歌曲数目
 )

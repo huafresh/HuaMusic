@@ -3,7 +3,6 @@ package hua.music.huamusic.home
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -11,11 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import hua.music.huamusic.R
-import hua.music.huamusic.data.MusicLiveModel
 import hua.music.huamusic.entitys.MenuEntity
 import hua.music.huamusic.entitys.SongListEntity
 import hua.music.huamusic.utils.CommonUtil
 import hua.music.huamusic.utils.JumpUtil
+import hua.music.huamusic.utils.dp2px
+import hua.music.huamusic.wrapper.recyclerview.LinearItemDecoration
 import kotterknife.bindView
 
 /**
@@ -37,9 +37,9 @@ class HomeFragment : Fragment() {
     private lateinit var mSongListAdapter: HomeSongListAdapter
 
     private val mMenuIcons = intArrayOf(
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher)
+            R.drawable.ic_music,
+            R.drawable.ic_recent,
+            R.drawable.ic_down)
     private val mMenuNames = intArrayOf(
             R.string.menu_local,
             R.string.menu_recent,
@@ -66,14 +66,18 @@ class HomeFragment : Fragment() {
 
         //菜单recyclerView初始化
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+        val menuDivider = LinearItemDecoration(activity)
+        menuDivider.setLeftPadding(recyclerView.dp2px(50f))
+        recyclerView.addItemDecoration(menuDivider)
         mMenuAdapter = HomeMenuAdapter(activity)
         mMenuAdapter.setDataList(getMenuDataList())
         recyclerView.adapter = mMenuAdapter
 
         //歌单RecyclerView初始化
         recyclerSongList.layoutManager = LinearLayoutManager(activity)
-        recyclerSongList.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+        val songDivider = HasLastLinearDivider(activity)
+        songDivider.setLeftPadding(recyclerView.dp2px(50f))
+        recyclerSongList.addItemDecoration(songDivider)
         mSongListAdapter = HomeSongListAdapter(activity)
         mSongListAdapter.setDataList(getDefaultSongList())
         recyclerSongList.adapter = mSongListAdapter

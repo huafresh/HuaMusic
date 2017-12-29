@@ -18,10 +18,10 @@ class HomeSongListAdapter(mContext: Context, @LayoutRes id: Int) :
 
     constructor(context: Context) : this(context, R.layout.item_home_song_list)
 
-    override fun convert(holder: MyViewHolder, data: SongListEntity?, position: Int) {
-        holder.setImageResId(R.id.iv_image, data?.iconId ?: 0)
-                .setText(R.id.tv_name, data?.name ?: "")
-                .setText(R.id.tv_sum, "${data?.sum ?: 0}")
+    override fun convert(holder: MyViewHolder, data: SongListEntity, position: Int) {
+        holder.setImageResId(R.id.iv_image, data.iconId)
+                .setText(R.id.tv_name, data.name)
+                .setText(R.id.tv_sum, "${data.sum}")
     }
 
 }
