@@ -14,9 +14,12 @@ import hua.music.huamusic.wrapper.recyclerview.SingleRvAdapter
 class AuthorListAdapter(context: Context, layoutId: Int) :
         SingleRvAdapter<AuthorEntity>(context, layoutId) {
 
-    constructor(context: Context):this(context, R.layout.item_author)
+    private val mContext = context
+
+    constructor(context: Context) : this(context, R.layout.item_author)
 
     override fun convert(holder: MyViewHolder, data: AuthorEntity, position: Int) {
-
+        holder.setText(R.id.tv_author, data.name ?: mContext.getString(R.string.default_author))
+        holder.setText(R.id.tv_sum, "${data.sum ?: 0}首")
     }
 }

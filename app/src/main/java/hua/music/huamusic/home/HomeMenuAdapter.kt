@@ -1,9 +1,7 @@
 package hua.music.huamusic.home
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.support.annotation.LayoutRes
-import android.support.v4.graphics.drawable.DrawableCompat
 import android.view.View
 import hua.music.huamusic.R
 import hua.music.huamusic.entitys.MenuEntity
@@ -26,7 +24,7 @@ class HomeMenuAdapter(context: Context, @LayoutRes id: Int) :
     constructor(context: Context) : this(context, R.layout.item_home_menu)
 
     override fun convert(holder: MyViewHolder, data: MenuEntity, position: Int) {
-        holder.setImageDrawable(R.id.iv_icon, tintDrawable(mContext, data.iconId,
+        holder.setImageDrawable(R.id.iv_icon, tintDrawable(mContext, data.iconResId,
                 CommonUtil.getColor(mContext, R.color.color_theme, null)))
                 .setText(R.id.tv_name, data.name)
                 .setText(R.id.tv_sum, "(${data.sum})")

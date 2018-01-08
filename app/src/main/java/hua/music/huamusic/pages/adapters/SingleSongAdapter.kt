@@ -12,11 +12,12 @@ import hua.music.huamusic.wrapper.recyclerview.SingleRvAdapter
  */
 class SingleSongAdapter(context: Context, layoutId: Int) :
         SingleRvAdapter<Music>(context, layoutId) {
+    private val mContext = context
 
     constructor(context: Context) : this(context, R.layout.item_music)
 
     override fun convert(holder: MyViewHolder, data: Music, position: Int) {
-        holder.setText(R.id.tv_title, data.title ?: "未知歌名")
-        holder.setText(R.id.tv_author, data.author ?: "未知歌手")
+        holder.setText(R.id.tv_title, data.title ?: mContext.getString(R.string.default_title))
+        holder.setText(R.id.tv_author, data.author ?: mContext.getString(R.string.default_author))
     }
 }

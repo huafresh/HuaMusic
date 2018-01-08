@@ -19,7 +19,7 @@ class HomeSongListAdapter(mContext: Context, @LayoutRes id: Int) :
     constructor(context: Context) : this(context, R.layout.item_home_song_list)
 
     override fun convert(holder: MyViewHolder, data: SongListEntity, position: Int) {
-        holder.setImageResId(R.id.iv_image, data.iconId)
+        holder.setImageResId(R.id.iv_image, data.iconResId)
                 .setText(R.id.tv_name, data.name)
                 .setText(R.id.tv_sum, "${data.sum}")
     }

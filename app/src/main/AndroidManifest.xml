@@ -27,7 +27,10 @@
         <activity android:name=".pages.recent.RecentActivity"/>
         <activity android:name=".pages.down.DownActivity"/>
         <activity android:name=".pages.local.ScanActivity"/>
-        <activity android:name=".pages.activitys.PlayActivity"/>
+
+        <activity
+            android:name=".pages.play.PlayActivity"
+            android:launchMode="singleTop"/>
 
         <service android:name=".service.MusicPlayerService"/>
 

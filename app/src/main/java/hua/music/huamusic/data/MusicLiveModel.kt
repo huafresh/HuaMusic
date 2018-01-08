@@ -88,6 +88,8 @@ class MusicLiveModel private constructor() : ViewModel() {
         val recentString = StorageManager.getInstance.getFromDisk(KEY_STORE_RECENT)
         if (recentString != null) {
             recentList.value = JsonParseUtil.parseJsonToList(recentString, Music::class.java)?.toMutableList()
+        } else{
+            recentList.value = mutableListOf()
         }
     }
 
@@ -124,7 +126,7 @@ class MusicLiveModel private constructor() : ViewModel() {
                     resolveLocalAuthorListAndUpdate(it)
                     resolveLocalAlbumListAndUpdate(it)
                     resolveLocalDirListAndUpdate(it)
-                    //缓存本地单曲列表
+                    //保存本地单曲列表
                     val singleSongString = JsonParseUtil.parseObjectToString(it)
                     if (singleSongString != null) {
                         StorageManager.getInstance.saveToDisk(KEY_STORE_SINGLE_SONG, singleSongString)
@@ -141,18 +143,26 @@ class MusicLiveModel private constructor() : ViewModel() {
             for (item in resultList) {
                 //理论上这里只会有一个key
                 for (key in item.keys) {
-                    if (key.name == author) {
-                        item[key]!!.add(music)
-                        key.sum!!.inc()
-                        continue@out
+                    try {
+                        if (key.name == author) {
+                            val mutableList = item[key]
+                            mutableList!!.add(music)
+                            //必须要remove，否则hashcode不一致
+                            item.remove(key)
+                            key.sum = key.sum!! + 1
+                            item.put(key, mutableList)
+                            continue@out
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
                 }
             }
             //到此说明此歌手不在列表，so add it
-            val authorEntity = AuthorEntity(author ?: "未知歌手", null, 0)
-            val item = hashMapOf<AuthorEntity, MutableList<Music>>()
+            val authorEntity = AuthorEntity(author, null, 0)
             val musicList = mutableListOf<Music>()
             musicList.add(music)
+            val item = hashMapOf<AuthorEntity, MutableList<Music>>()
             item.put(authorEntity, musicList)
             resultList.add(item)
         }
@@ -168,14 +178,18 @@ class MusicLiveModel private constructor() : ViewModel() {
                 //理论上这里只会有一个key
                 for (key in item.keys) {
                     if (key.name == album) {
-                        item[key]!!.add(music)
-                        key.sum!!.inc()
+                        val mutableList = item[key]
+                        mutableList!!.add(music)
+                        //必须要remove，否则hashcode不一致
+                        item.remove(key)
+                        key.sum = key.sum!! + 1
+                        item.put(key, mutableList)
                         continue@out
                     }
                 }
             }
             //到此说明此专辑不在列表，so add it
-            val albumEntity = AlbumEntity(album ?: "未知专辑", null, 0)
+            val albumEntity = AlbumEntity(album, null, 0, music.author)
             val item = hashMapOf<AlbumEntity, MutableList<Music>>()
             val musicList = mutableListOf<Music>()
             musicList.add(music)
@@ -194,21 +208,31 @@ class MusicLiveModel private constructor() : ViewModel() {
                 //理论上这里只会有一个key
                 for (key in item.keys) {
                     if (key.name == dir) {
-                        item[key]!!.add(music)
-                        key.sum!!.inc()
+                        val mutableList = item[key]
+                        mutableList!!.add(music)
+                        //必须要remove，否则hashcode不一致
+                        item.remove(key)
+                        key.sum = key.sum!! + 1
+                        item.put(key, mutableList)
                         continue@out
                     }
                 }
             }
             //到此说明此文件夹不在列表，so add it
-            val dirEntity = DirEntity(dir ?: "未知文件夹", music.dirPath, 0)
+            val dirEntity = DirEntity(dir, music.dirPath, 1)
             val item = hashMapOf<DirEntity, MutableList<Music>>()
             val musicList = mutableListOf<Music>()
             musicList.add(music)
-            item.put(dirEntity,musicList)
+            item.put(dirEntity, musicList)
             resultList.add(item)
         }
         localDirList.value = resultList
+    }
+
+    fun addRecentPlay(music: Music) {
+        if (recentList.value?.contains(music) == false) {
+            recentList.value?.add(0, music)
+        }
     }
 
 }

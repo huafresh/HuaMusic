@@ -12,11 +12,14 @@ import android.os.IBinder
 import android.support.v4.app.Fragment
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import hua.music.huamusic.base.BaseActivity
+import hua.music.huamusic.data.MusicLiveModel
 import hua.music.huamusic.home.HomeFragment
 import hua.music.huamusic.pages.recent.RecentActivity
 import hua.music.huamusic.service.MusicPlayerService
+import hua.music.huamusic.views.MusicController
 import hua.music.huamusic.wrapper.permission.PermissionHelper
 import hua.music.huamusic.wrapper.permission.PermissionListener
 
@@ -27,9 +30,6 @@ class MainActivity : BaseActivity(), Toolbar.OnMenuItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        //提前扫描音乐列表，需要的时候进行观察，会直接收到最新的列表数据
-//        MusicLiveModel.getInstance().scanLocalMusic(this.applicationContext)
 
         PermissionHelper.get(this).requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE,
                 object : PermissionListener {
@@ -49,7 +49,6 @@ class MainActivity : BaseActivity(), Toolbar.OnMenuItemClickListener {
                         mAlertDialog?.show()
                     }
                 })
-
     }
 
     override fun onBackPressed() {
@@ -66,20 +65,16 @@ class MainActivity : BaseActivity(), Toolbar.OnMenuItemClickListener {
 
     override fun initToolBar(toolbar: Toolbar) {
         super.initToolBar(toolbar)
-//        val toolBarChild = LayoutInflater.from(this).
-//                inflate(R.layout.main_tool_bar, toolbar, false)
-//        toolbar.addView(toolBarChild)
         toolbar.setNavigationIcon(R.drawable.left_menu_button)
         toolbar.title = getString(R.string.app_name)
-        val menuItem = toolbar.menu.add(0, RecentActivity.CLEAR_ID, 0, getString(R.string.action_recent_clear))
-        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        toolbar.inflateMenu(R.menu.menu_home)
         toolbar.setOnMenuItemClickListener(this)
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            RecentActivity.CLEAR_ID -> {
-                Toast.makeText(this, "clear", Toast.LENGTH_SHORT).show()
+            R.id.search -> {
+                Toast.makeText(this, "search", Toast.LENGTH_SHORT).show()
             }
             else -> {
             }
@@ -90,6 +85,5 @@ class MainActivity : BaseActivity(), Toolbar.OnMenuItemClickListener {
     override fun onCreateContent(): Fragment? {
         return HomeFragment()
     }
-
 
 }

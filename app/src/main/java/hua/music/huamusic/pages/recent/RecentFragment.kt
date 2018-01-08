@@ -38,16 +38,7 @@ class RecentFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
         mAdapter = SingleSongAdapter(activity)
-        mAdapter.setDataList(generateTempData())
         recyclerView.adapter = mAdapter
-    }
-
-    private fun generateTempData(): List<Music> {
-        val list = mutableListOf<Music>()
-        for (i in 0..30) {
-            list.add(Music("","","","","","",""))
-        }
-        return list
     }
 
     private fun setListeners() {

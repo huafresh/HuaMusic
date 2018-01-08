@@ -33,4 +33,13 @@
     <string name="no_music">暂无本地音乐</string>
     <string name="no_music_button">一键扫描</string>
 
+    <!--默认字符串-->
+    <string name="default_title">未知歌名</string>
+    <string name="default_author">未知歌手</string>
+    <string name="default_album">未知专辑</string>
+    <string name="default_dir_name">未知文件夹</string>
+    <string name="default_dir_path">未知路径</string>
+    <string name="default_time">00:00</string>
+
+
 </resources>

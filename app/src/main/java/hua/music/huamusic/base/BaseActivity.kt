@@ -1,7 +1,6 @@
 package hua.music.huamusic.base
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Bundle
 import android.support.annotation.CallSuper
 import android.support.v4.app.Fragment
@@ -10,9 +9,10 @@ import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.FrameLayout
 import hua.music.huamusic.R
-import hua.music.huamusic.home.HomeFragment
+import hua.music.huamusic.service.MusicPlayerService
+import hua.music.huamusic.storage.StorageManager
 import hua.music.huamusic.utils.CommonUtil
-import hua.music.huamusic.views.ViewFactory
+import hua.music.huamusic.views.MusicController
 import kotterknife.bindView
 
 /**
@@ -33,16 +33,12 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
         initToolBar(toolBar)
-        initContent()
-        initMusicController()
-        setListeners()
+        addContent()
     }
 
-
-    private fun setListeners() {
-        flMusicController.setOnClickListener {
-            onMusicControllerClick()
-        }
+    override fun onResume() {
+        super.onResume()
+        addMusicController()
     }
 
     /**
@@ -57,7 +53,7 @@ open class BaseActivity : AppCompatActivity() {
         toolbar.setTitleTextColor(CommonUtil.getColor(this, android.R.color.white, null))
     }
 
-    private fun initContent() {
+    private fun addContent() {
         var content = supportFragmentManager.findFragmentById(R.id.fl_content)
         if (content == null) {
             content = onCreateContent()
@@ -76,11 +72,13 @@ open class BaseActivity : AppCompatActivity() {
         return null
     }
 
-    private fun initMusicController() {
+    private fun addMusicController() {
         val controller = onCreateMusicController()
         if (controller != null) {
             flMusicController.visibility = View.VISIBLE
             flMusicController.addView(controller)
+        } else{
+            flMusicController.visibility = View.GONE
         }
     }
 
@@ -88,14 +86,13 @@ open class BaseActivity : AppCompatActivity() {
      * 创建音乐控制器
      */
     open protected fun onCreateMusicController(): View? {
-        return ViewFactory.createView(this, ViewFactory.TYPE_MUSIC_CONTROLLER)
+        val controller = MusicController().getView(this)
+        return if (controller?.visibility == View.VISIBLE) {
+            controller
+        } else {
+            null
+        }
     }
 
-    /**
-     * 底部音乐控制器点击时调用
-     */
-    open protected fun onMusicControllerClick() {
-
-    }
 
 }

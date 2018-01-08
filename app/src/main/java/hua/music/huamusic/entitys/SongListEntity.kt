@@ -8,9 +8,9 @@ package hua.music.huamusic.entitys
  *
  */
 data class SongListEntity(
-        var iconId: Int,
+        var id: Int,
+        var iconResId: Int,
         var name: String,
-        var sum: Int,
-        var type: String
+        var sum: Int
 )
 

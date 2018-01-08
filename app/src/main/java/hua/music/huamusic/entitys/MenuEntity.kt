@@ -8,10 +8,10 @@ package hua.music.huamusic.entitys
  *
  */
 data class MenuEntity(
-        var iconId: Int,
+        var id: Int,
+        var iconResId: Int,
         var name: String,
         var sum: Int,
-        var isPlay: Boolean,
-        var type:String
+        var isPlay: Boolean
 )
 

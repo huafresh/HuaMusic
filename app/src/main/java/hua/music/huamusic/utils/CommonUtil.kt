@@ -41,6 +41,20 @@ import java.util.regex.Pattern
 object CommonUtil {
 
     /**
+     * 功能：把毫秒值转换为形如，03:45 的字符串
+     */
+    fun formatTimeToString(ms: Int): String {
+        val second = ms / 1000
+        val minute = second / 60
+        val timeString: String
+        timeString = if (second % 60 > 9)
+            minute.toString() + ":" + second % 60
+        else
+            minute.toString() + ":0" + second % 60
+        return timeString
+    }
+
+    /**
      * 把资源图片着成给定的颜色。
      * 主要是有些图片资源找不到。
      */

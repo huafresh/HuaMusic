@@ -30,9 +30,14 @@ class AuthorFragment:Fragment() {
     private val recyclerView: RecyclerView by bindView(R.id.recycler_view)
     private lateinit var mAdapter: AuthorListAdapter
 
+    private var mView: View? = null
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_local_common, container, false)
+        if (mView == null) {
+            mView = inflater?.inflate(R.layout.fragment_local_common, container, false)
+        }
+        return mView
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

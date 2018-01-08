@@ -1,17 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="60dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimary">
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:background="@android:color/black"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp">
+
+    <ImageView
+        android:id="@+id/iv_cover"
+        android:layout_width="@dimen/click_width"
+        android:layout_height="match_parent"
+        android:src="@drawable/default_cover"/>
+
     <TextView
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="音乐控制器"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:text="够爱"
         android:textColor="@android:color/white"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tv_author"
+        app:layout_constraintLeft_toRightOf="@id/iv_cover"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintVertical_chainStyle="packed"/>
+
+    <TextView
+        android:id="@+id/tv_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:text="东城卫"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/iv_cover"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"/>
+
+    <View
+        android:id="@+id/bac_play_btn"
+        android:layout_width="@dimen/click_width"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintRight_toLeftOf="@+id/bac_play_list"/>
+
+    <ImageView
+        android:id="@+id/iv_play_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/controller_play"
+        app:layout_constraintBottom_toBottomOf="@id/bac_play_btn"
+        app:layout_constraintLeft_toLeftOf="@id/bac_play_btn"
+        app:layout_constraintRight_toRightOf="@id/bac_play_btn"
+        app:layout_constraintTop_toTopOf="@id/bac_play_btn"/>
+
+    <View
+        android:id="@+id/bac_play_list"
+        android:layout_width="@dimen/click_width"
+        android:layout_height="match_parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iv_play_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/left_menu_button"
+        app:layout_constraintBottom_toBottomOf="@id/bac_play_list"
+        app:layout_constraintLeft_toLeftOf="@id/bac_play_list"
+        app:layout_constraintRight_toRightOf="@id/bac_play_list"
+        app:layout_constraintTop_toTopOf="@id/bac_play_list"
+        />
+
 </android.support.constraint.ConstraintLayout>

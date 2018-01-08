@@ -59,10 +59,19 @@ class DataSourceImpl private constructor() : IDataSource {
                 val fileSize = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE))
                 val filePath = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA))
                 val fileName = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME))
-                val fileDir = filePath.substring(0, filePath.length - fileName.length)
-                val arrays = fileDir.split("/")
+                val dirPath = filePath.substring(0, filePath.length - fileName.length)
+                val arrays = dirPath.split("/")
                 val dirName = arrays[arrays.size - 2]
-                val music = Music(title, author, filePath, fileDir, dirName, album, null)
+                val music = Music(i)
+                music.title = title
+                music.author = author
+                music.album = album
+                music.duration = duration
+                music.fileSize = fileSize
+                music.filePath = filePath
+                music.fileName = fileName
+                music.dirPath = dirPath
+                music.dirName = dirName
                 list.add(music)
             }
         }

@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/play_default_bac">
 
     <View
         android:id="@+id/view_header"
@@ -68,7 +69,6 @@
         android:id="@+id/tv_lrc_textView"
         android:layout_width="match_parent"
         android:layout_height="340dp"
-        android:background="@color/colorAccent"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/view_header"/>
 
@@ -79,6 +79,46 @@
         app:layout_constraintTop_toBottomOf="@id/tv_lrc_textView"/>
 
     <!--这里添加喜欢、下载、评论等列表-->
+
+    <ImageView
+        android:id="@+id/iv_love"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_down"
+        app:layout_constraintBottom_toBottomOf="@id/bac_buttons"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/iv_down"
+        app:layout_constraintTop_toTopOf="@id/bac_buttons"/>
+
+    <ImageView
+        android:id="@+id/iv_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_down"
+        app:layout_constraintBottom_toBottomOf="@id/bac_buttons"
+        app:layout_constraintLeft_toRightOf="@id/iv_love"
+        app:layout_constraintRight_toLeftOf="@+id/iv_comment"
+        app:layout_constraintTop_toTopOf="@id/bac_buttons"/>
+
+    <ImageView
+        android:id="@+id/iv_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_down"
+        app:layout_constraintBottom_toBottomOf="@id/bac_buttons"
+        app:layout_constraintLeft_toRightOf="@id/iv_down"
+        app:layout_constraintRight_toLeftOf="@+id/iv_more"
+        app:layout_constraintTop_toTopOf="@id/bac_buttons"/>
+
+    <ImageView
+        android:id="@+id/iv_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_down"
+        app:layout_constraintBottom_toBottomOf="@id/bac_buttons"
+        app:layout_constraintLeft_toRightOf="@id/iv_comment"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bac_buttons"/>
 
     <View
         android:id="@+id/bac_seek_bar"
@@ -91,26 +131,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="00:02"
+        app:layout_constraintBottom_toBottomOf="@id/bac_seek_bar"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/seek_bar"
-        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintTop_toTopOf="@id/bac_seek_bar"
-        app:layout_constraintBottom_toBottomOf="@id/bac_seek_bar"/>
+        />
 
     <SeekBar
         android:id="@+id/seek_bar"
         android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:max="100"
+        app:layout_constraintBottom_toBottomOf="@id/bac_seek_bar"
         app:layout_constraintLeft_toRightOf="@id/tv_time_current"
         app:layout_constraintRight_toLeftOf="@+id/tv_time_total"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintTop_toTopOf="@id/bac_seek_bar"/>
 
     <TextView
         android:id="@+id/tv_time_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:text="04:12"
+        app:layout_constraintBottom_toBottomOf="@id/bac_seek_bar"
         app:layout_constraintLeft_toRightOf="@id/seek_bar"
         app:layout_constraintRight_toRightOf="parent"
-        android:text="04:12"/>
+        app:layout_constraintTop_toTopOf="@id/bac_seek_bar"/>
 
     <View
         android:id="@+id/bac_controller"
@@ -122,26 +172,50 @@
         android:id="@+id/iv_play_mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/loop"/>
+        android:src="@drawable/play_mode_normal"
+        app:layout_constraintBottom_toBottomOf="@id/bac_controller"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/iv_previous"
+        app:layout_constraintTop_toTopOf="@id/bac_controller"/>
+
     <ImageView
         android:id="@+id/iv_previous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/previous"/>
+        android:src="@drawable/selector_previous"
+        app:layout_constraintBottom_toBottomOf="@id/bac_controller"
+        app:layout_constraintLeft_toRightOf="@id/iv_play_mode"
+        app:layout_constraintRight_toLeftOf="@+id/iv_play"
+        app:layout_constraintTop_toTopOf="@id/bac_controller"/>
+
     <ImageView
         android:id="@+id/iv_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/play"/>
+        android:src="@drawable/selector_play"
+        app:layout_constraintBottom_toBottomOf="@id/bac_controller"
+        app:layout_constraintLeft_toRightOf="@id/iv_previous"
+        app:layout_constraintRight_toLeftOf="@id/iv_next"
+        app:layout_constraintTop_toTopOf="@id/bac_controller"/>
+
     <ImageView
         android:id="@+id/iv_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/next"/>
+        android:src="@drawable/selector_next"
+        app:layout_constraintBottom_toBottomOf="@id/bac_controller"
+        app:layout_constraintLeft_toRightOf="@id/iv_play"
+        app:layout_constraintRight_toLeftOf="@id/iv_play_list"
+        app:layout_constraintTop_toTopOf="@id/bac_controller"/>
+
     <ImageView
         android:id="@+id/iv_play_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/loop"/>
+        android:src="@drawable/selector_play_list"
+        app:layout_constraintBottom_toBottomOf="@id/bac_controller"
+        app:layout_constraintLeft_toRightOf="@id/iv_next"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bac_controller"/>
 
 </android.support.constraint.ConstraintLayout>

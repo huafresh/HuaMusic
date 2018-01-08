@@ -1,5 +1,7 @@
 package hua.music.huamusic.home
 
+import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
@@ -10,10 +12,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import hua.music.huamusic.R
+import hua.music.huamusic.data.MusicLiveModel
 import hua.music.huamusic.entitys.MenuEntity
 import hua.music.huamusic.entitys.SongListEntity
+import hua.music.huamusic.pages.down.DownActivity
+import hua.music.huamusic.pages.local.LocalActivity
+import hua.music.huamusic.pages.recent.RecentActivity
 import hua.music.huamusic.utils.CommonUtil
-import hua.music.huamusic.utils.JumpUtil
 import hua.music.huamusic.utils.dp2px
 import hua.music.huamusic.wrapper.recyclerview.LinearItemDecoration
 import kotterknife.bindView
@@ -36,7 +41,21 @@ class HomeFragment : Fragment() {
     private lateinit var mMenuAdapter: HomeMenuAdapter
     private lateinit var mSongListAdapter: HomeSongListAdapter
 
-    private val mMenuIcons = intArrayOf(
+    companion object {
+        /**
+         * 菜单id
+         */
+        val MENU_ID_LOCAL = 1
+        val MENU_ID_RECENT = 2
+        val MENU_ID_DOWNLOAD = 3
+        val MENU_ID_SONG_LIST = 4
+        /**
+         * 歌单列表id
+         */
+        val SONG_LIST_LOVE = 1
+    }
+
+    private val mMenuIconResIds = intArrayOf(
             R.drawable.ic_music,
             R.drawable.ic_recent,
             R.drawable.ic_down)
@@ -44,14 +63,16 @@ class HomeFragment : Fragment() {
             R.string.menu_local,
             R.string.menu_recent,
             R.string.menu_down)
-    private val mMenuTypes = arrayOf(
-            JumpUtil.ACTIVITY_TYPE_LOCAL,
-            JumpUtil.ACTIVITY_TYPE_RECENT,
-            JumpUtil.ACTIVITY_TYPE_DOWNLOAD)
+    private val mMenuIds = intArrayOf(
+            MENU_ID_LOCAL,
+            MENU_ID_RECENT,
+            MENU_ID_DOWNLOAD)
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        mView = inflater?.inflate(R.layout.fragment_main, container, false)
+        if (mView == null) {
+            mView = inflater?.inflate(R.layout.fragment_main, container, false)
+        }
         return mView
     }
 
@@ -59,10 +80,13 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         initViews()
         setListeners()
+        setObservers()
     }
 
+
     private fun initViews() {
-        swipeRefreshLayout.setColorSchemeColors(CommonUtil.getColor(activity, R.color.color_theme, null))
+        swipeRefreshLayout.setColorSchemeColors(CommonUtil.getColor(activity,
+                R.color.color_theme, null))
 
         //菜单recyclerView初始化
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -87,20 +111,22 @@ class HomeFragment : Fragment() {
     }
 
     private fun getMenuDataList(): MutableList<MenuEntity> {
-        val count: Int = mMenuIcons.size
+        val count: Int = mMenuIconResIds.size
         val list: MutableList<MenuEntity> = mutableListOf()
         (0 until count).mapTo(list) {
-            MenuEntity(mMenuIcons[it], getString(mMenuNames[it]), 0, false, mMenuTypes[it])
+            MenuEntity(mMenuIds[it], mMenuIconResIds[it],
+                    getString(mMenuNames[it]), 0, false)
         }
         return list
     }
 
     private fun getDefaultSongList(): MutableList<SongListEntity> {
         return mutableListOf(SongListEntity(
+                SONG_LIST_LOVE,
                 R.mipmap.ic_launcher,
                 "我喜欢的音乐",
-                0,
-                JumpUtil.ACTIVITY_TYPE_SONG_LIST))
+                0
+        ))
     }
 
     private fun setListeners() {
@@ -108,20 +134,87 @@ class HomeFragment : Fragment() {
             refreshPage()
         }
         mMenuAdapter.setOnItemClickListener { view, position ->
-            val data: MenuEntity = mMenuAdapter.getDataList()[position]
-            JumpUtil.startActivity(activity, data.type)
-        }
-        mSongListAdapter.setOnItemClickListener { view, position ->
-            val data: SongListEntity = mSongListAdapter.getDataList()[position]
-            JumpUtil.startActivity(activity, data.type)
-        }
-        viewBacSongList.setOnClickListener {
-            if (isShowSongList) {
-                dismissSongList(true)
-            } else {
-                showSongList()
+            if (!swipeRefreshLayout.isRefreshing) {
+                val data: MenuEntity = mMenuAdapter.getDataList()[position]
+                val intent = when (data.id) {
+                    MENU_ID_LOCAL -> {
+                        Intent(activity, LocalActivity::class.java)
+                    }
+                    MENU_ID_RECENT -> {
+                        Intent(activity, RecentActivity::class.java)
+                    }
+                    MENU_ID_DOWNLOAD -> {
+                        Intent(activity, DownActivity::class.java)
+                    }
+                    else -> {
+                        null
+                    }
+                }
+                if (intent != null) {
+                    startActivity(intent)
+                }
             }
         }
+        mSongListAdapter.setOnItemClickListener { view, position ->
+            if (!swipeRefreshLayout.isRefreshing) {
+                val data: SongListEntity = mSongListAdapter.getDataList()[position]
+                val intent = when (data.id) {
+                    SONG_LIST_LOVE -> {
+                        //todo 跳转音乐列表页面
+                        null
+                    }
+                    else -> {
+                        null
+                    }
+                }
+                if (intent != null) {
+                    startActivity(intent)
+                }
+            }
+        }
+        viewBacSongList.setOnClickListener {
+            if (!swipeRefreshLayout.isRefreshing) {
+                if (isShowSongList) {
+                    dismissSongList(true)
+                } else {
+                    showSongList()
+                }
+            }
+        }
+    }
+
+    private fun setObservers() {
+        swipeRefreshLayout.isRefreshing = true
+        MusicLiveModel.getInstance().scanLocalMusic(activity.applicationContext)
+
+        MusicLiveModel.getInstance().singleSongList.observe(this, Observer {
+            val dataList = mMenuAdapter.getDataList()
+            dataList.forEach {
+                if (it.id == MENU_ID_LOCAL) {
+                    it.sum = MusicLiveModel.getInstance().singleSongList.value?.size ?: 0
+                    mMenuAdapter.notifyItemChanged(dataList.indexOf(it))
+                }
+            }
+            swipeRefreshLayout.isRefreshing = false
+        })
+        MusicLiveModel.getInstance().recentList.observe(this, Observer {
+            val dataList = mMenuAdapter.getDataList()
+            dataList.forEach {
+                if (it.id == MENU_ID_RECENT) {
+                    it.sum = MusicLiveModel.getInstance().recentList.value?.size ?: 0
+                    mMenuAdapter.notifyItemChanged(dataList.indexOf(it))
+                }
+            }
+        })
+        MusicLiveModel.getInstance().downedList.observe(this, Observer {
+            val dataList = mMenuAdapter.getDataList()
+            dataList.forEach {
+                if (it.id == MENU_ID_DOWNLOAD) {
+                    it.sum = MusicLiveModel.getInstance().downedList.value?.size ?: 0
+                    mMenuAdapter.notifyItemChanged(dataList.indexOf(it))
+                }
+            }
+        })
     }
 
     private fun showSongList() {
@@ -143,6 +236,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun refreshPage() {
-        TODO("刷新界面")
+        MusicLiveModel.getInstance().scanLocalMusic(activity.applicationContext)
     }
 }
