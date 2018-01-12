@@ -31,6 +31,10 @@
         <activity
             android:name=".pages.play.PlayActivity"
             android:launchMode="singleTop"/>
+        <activity android:name=".pages.scan.ScanMusicActivity"/>
+        <activity android:name=".pages.scan.ScanWholeActivity"/>
+        <activity android:name=".pages.scan.ScanCustomActivity"/>
+        <activity android:name=".pages.scan.ScanSettingActivity"/>
 
         <service android:name=".service.MusicPlayerService"/>
 

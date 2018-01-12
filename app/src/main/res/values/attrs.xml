@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <declare-styleable name="ScanMusicView">
+        <attr name="src_phone" format="reference"/>
+        <attr name="scale_phone" format="float"/>
+        <attr name="src_search" format="reference"/>
+        <attr name="scale_search" format="float"/>
+    </declare-styleable>
 </resources>

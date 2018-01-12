@@ -49,7 +49,7 @@ class DownActivity : BaseActivity(), Toolbar.OnMenuItemClickListener {
     }
 
 
-    override fun onCreateContent(): Fragment? {
+    override fun onCreateFragment(): Fragment? {
         return DownFragment()
     }
 

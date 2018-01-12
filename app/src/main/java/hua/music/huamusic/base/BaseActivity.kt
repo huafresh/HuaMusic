@@ -7,10 +7,9 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import hua.music.huamusic.R
-import hua.music.huamusic.service.MusicPlayerService
-import hua.music.huamusic.storage.StorageManager
 import hua.music.huamusic.utils.CommonUtil
 import hua.music.huamusic.views.MusicController
 import kotterknife.bindView
@@ -56,19 +55,20 @@ open class BaseActivity : AppCompatActivity() {
     private fun addContent() {
         var content = supportFragmentManager.findFragmentById(R.id.fl_content)
         if (content == null) {
-            content = onCreateContent()
+            content = onCreateFragment()
         }
         if (content != null) {
             supportFragmentManager.beginTransaction()
                     .add(R.id.fl_content, content)
                     .commit()
         }
+
     }
 
     /**
-     * 创建内容，直接提供实例，不要先find
+     * 创建fragment内容，直接提供实例，不要先find
      */
-    open protected fun onCreateContent(): Fragment? {
+    open protected fun onCreateFragment(): Fragment? {
         return null
     }
 
@@ -77,7 +77,7 @@ open class BaseActivity : AppCompatActivity() {
         if (controller != null) {
             flMusicController.visibility = View.VISIBLE
             flMusicController.addView(controller)
-        } else{
+        } else {
             flMusicController.visibility = View.GONE
         }
     }

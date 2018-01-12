@@ -64,7 +64,7 @@ class LocalActivity : BaseActivity(), Toolbar.OnMenuItemClickListener {
         return item != null
     }
 
-    override fun onCreateContent(): Fragment? {
+    override fun onCreateFragment(): Fragment? {
         return LocalFragment()
     }
 

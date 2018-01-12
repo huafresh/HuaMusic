@@ -2,6 +2,7 @@ package hua.music.huamusic.utils
 
 import android.util.TypedValue
 import android.view.View
+import java.util.*
 
 /**
  * kotlin扩展
@@ -21,3 +22,4 @@ fun View.dp2px(dp: Float): Int {
 fun View.sp2px(sp: Float): Int {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, resources.displayMetrics).toInt()
 }
+

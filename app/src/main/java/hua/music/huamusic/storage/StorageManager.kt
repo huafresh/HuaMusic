@@ -21,6 +21,8 @@ class StorageManager private constructor(context: Context) {
     }
 
     companion object {
+        val TRUE = "true"
+        val FALSE = "false"
         val getInstance: StorageManager
             get() = Holder.sInstance
     }

@@ -1,30 +1,29 @@
 package hua.music.huamusic.data
 
+import android.arch.core.util.Function
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.content.Context
-import android.text.TextUtils
-import hua.music.huamusic.entitys.AlbumEntity
-import hua.music.huamusic.entitys.AuthorEntity
-import hua.music.huamusic.entitys.DirEntity
-import hua.music.huamusic.entitys.Music
+import hua.music.huamusic.data.livedatas.MusicListLiveData
+import hua.music.huamusic.data.livedatas.ScanFilterDirLiveData
+import hua.music.huamusic.entitys.*
 import hua.music.huamusic.storage.StorageManager
 import hua.music.huamusic.utils.JsonParseUtil
-import io.reactivex.Flowable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Function
-import io.reactivex.schedulers.Schedulers
 
 /**
  * 使用lifecycle框架，持有了多个音乐列表数据的LiveData，
- * 并且是单例类，实现全局共享音乐列表。
+ * 并且是单例类，实现整个应用全局共享音乐列表。
  *
  * Created by hua on 2017/12/23.
  */
 class MusicLiveModel private constructor() : ViewModel() {
 
     companion object {
-        val KEY_STORE_SINGLE_SONG = "key_single_song"
+        /**
+         * 列表缓存key
+         */
         val KEY_STORE_RECENT = "key_recent"
         val KEY_STORE_DOWNED = "key_downed"
         val KEY_STORE_DOWNING = "key_downing"
@@ -44,22 +43,21 @@ class MusicLiveModel private constructor() : ViewModel() {
     /**
      * 本地音乐单曲列表
      */
-    val singleSongList: MutableLiveData<MutableList<Music>> = MutableLiveData()
+    val singleSongList: MusicListLiveData = MusicListLiveData()
     /**
      * 本地音乐歌手列表
      */
-    val localAuthorList: MutableLiveData<MutableList<HashMap<AuthorEntity, MutableList<Music>>>>
-            = MutableLiveData()
+    var localAuthorList: LiveData<List<HashMap<AuthorEntity, MutableList<Music>>>>
     /**
      * 本地音乐专辑列表
      */
-    val localAlbumList: MutableLiveData<MutableList<HashMap<AlbumEntity, MutableList<Music>>>>
-            = MutableLiveData()
+    var localAlbumList: LiveData<List<HashMap<AlbumEntity, MutableList<Music>>>>
     /**
      * 本地音乐文件夹列表
      */
-    val localDirList: MutableLiveData<MutableList<HashMap<DirEntity, MutableList<Music>>>>
-            = MutableLiveData()
+    var localDirList: LiveData<List<HashMap<DirEntity, MutableList<Music>>>>
+
+
     /**
      * 最近播放列表
      */
@@ -75,6 +73,16 @@ class MusicLiveModel private constructor() : ViewModel() {
     val downingList: MutableLiveData<MutableList<Music>> = MutableLiveData()
 
     /**
+     * 过滤目录列表。扫描设置中使用。
+     */
+    val scanFilterList: ScanFilterDirLiveData = ScanFilterDirLiveData()
+
+    /**
+     * 外部存储文件夹列表，自定义扫描中使用
+     */
+    val externalDirList: MutableLiveData<MutableList<ExternalDirEntity>> = MutableLiveData()
+
+    /**
      * toast
      */
     val toastLiveData: MutableLiveData<String> = MutableLiveData()
@@ -85,150 +93,55 @@ class MusicLiveModel private constructor() : ViewModel() {
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
+        //相关本地列表与单曲列表建立关联，此后单曲列表改变，则相关列表会及时刷新
+        localAuthorList = Transformations.map(singleSongList, Function<List<Music>,
+                List<HashMap<AuthorEntity, MutableList<Music>>>> {
+            DataUtil.resolveLocalAuthorList(it)
+        })
+        localAlbumList = Transformations.map(singleSongList, Function<List<Music>,
+                List<HashMap<AlbumEntity, MutableList<Music>>>> {
+            DataUtil.resolveLocalAlbumList(it)
+        })
+        localDirList = Transformations.map(singleSongList, Function<List<Music>,
+                List<HashMap<DirEntity, MutableList<Music>>>> {
+            DataUtil.resolveLocalDirList(it)
+        })
+
+        //恢复最近播放列表
         val recentString = StorageManager.getInstance.getFromDisk(KEY_STORE_RECENT)
         if (recentString != null) {
             recentList.value = JsonParseUtil.parseJsonToList(recentString, Music::class.java)?.toMutableList()
-        } else{
+        } else {
             recentList.value = mutableListOf()
         }
     }
 
     /**
-     * 开始扫描本地音乐，以便初始化本地音乐相关的列表。
-     * 可以在进入主界面时就调用，提前初始化，提升进入本地音乐界面的响应速度。
+     * 扫描本地音乐。
      */
-    fun scanLocalMusic(context: Context) {
-        loadingLiveData.value = true
-        //rx的处理逻辑是：先获取本地单曲音乐列表（先缓存后provider扫描）
-        //然后根据本地单曲音乐列表解析得到歌手、专辑、文件夹等列表
-        Flowable.just(StorageManager.getInstance.getFromDisk(KEY_STORE_SINGLE_SONG) ?: "")
-                .subscribeOn(Schedulers.newThread())
-                .flatMap(Function<String?, Flowable<MutableList<Music>>> {
-                    var list: MutableList<Music>? = null
-                    if (!TextUtils.isEmpty(it)) {
-                        list = JsonParseUtil.parseJsonToList(it, Music::class.java)?.toMutableList()
-                    }
-                    Flowable.just(list ?: mutableListOf())
-                })
-                .map(Function<MutableList<Music>, MutableList<Music>> {
-                    var resultList = it
-                    if (resultList.size == 0) {
-                        val list = DataSourceImpl.getInstance().getSingleSongList(context)
-                        if (list != null) {
-                            resultList = list.toMutableList()
-                        }
-                    }
-                    resultList
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    singleSongList.value = it
-                    resolveLocalAuthorListAndUpdate(it)
-                    resolveLocalAlbumListAndUpdate(it)
-                    resolveLocalDirListAndUpdate(it)
-                    //保存本地单曲列表
-                    val singleSongString = JsonParseUtil.parseObjectToString(it)
-                    if (singleSongString != null) {
-                        StorageManager.getInstance.saveToDisk(KEY_STORE_SINGLE_SONG, singleSongString)
-                    }
-                    loadingLiveData.value = false
-                }
+    fun scanMusic(context: Context) {
+        singleSongList.scanLocalMusic(context)
     }
 
-    private fun resolveLocalAuthorListAndUpdate(list: MutableList<Music>) {
-        localAuthorList.value?.clear()
-        val resultList = mutableListOf<HashMap<AuthorEntity, MutableList<Music>>>()
-        out@ for (music in list) {
-            val author = music.author
-            for (item in resultList) {
-                //理论上这里只会有一个key
-                for (key in item.keys) {
-                    try {
-                        if (key.name == author) {
-                            val mutableList = item[key]
-                            mutableList!!.add(music)
-                            //必须要remove，否则hashcode不一致
-                            item.remove(key)
-                            key.sum = key.sum!! + 1
-                            item.put(key, mutableList)
-                            continue@out
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-            //到此说明此歌手不在列表，so add it
-            val authorEntity = AuthorEntity(author, null, 0)
-            val musicList = mutableListOf<Music>()
-            musicList.add(music)
-            val item = hashMapOf<AuthorEntity, MutableList<Music>>()
-            item.put(authorEntity, musicList)
-            resultList.add(item)
-        }
-        localAuthorList.value = resultList
+    /**
+     * 获取可以设置扫描过滤的目录。
+     * 所谓可以设置扫描过滤的目录是指该目录下存在音频文件，
+     * 如果存在音乐文件，那么该目录默认选中；否则默认不选中
+     */
+    fun getFilterDirList(context: Context) {
+        DataSourceImpl.getInstance().getFilterDirList(context)
     }
 
-    private fun resolveLocalAlbumListAndUpdate(list: List<Music>) {
-        localAlbumList.value?.clear()
-        val resultList = mutableListOf<HashMap<AlbumEntity, MutableList<Music>>>()
-        out@ for (music in list) {
-            val album = music.album
-            for (item in resultList) {
-                //理论上这里只会有一个key
-                for (key in item.keys) {
-                    if (key.name == album) {
-                        val mutableList = item[key]
-                        mutableList!!.add(music)
-                        //必须要remove，否则hashcode不一致
-                        item.remove(key)
-                        key.sum = key.sum!! + 1
-                        item.put(key, mutableList)
-                        continue@out
-                    }
-                }
-            }
-            //到此说明此专辑不在列表，so add it
-            val albumEntity = AlbumEntity(album, null, 0, music.author)
-            val item = hashMapOf<AlbumEntity, MutableList<Music>>()
-            val musicList = mutableListOf<Music>()
-            musicList.add(music)
-            item.put(albumEntity, musicList)
-            resultList.add(item)
-        }
-        localAlbumList.value = resultList
+    /**
+     * 获取外部存储文件夹列表
+     */
+    fun getExternalDirList() {
+        DataSourceImpl.getInstance().getExternalDirList()
     }
 
-    private fun resolveLocalDirListAndUpdate(list: List<Music>) {
-        localDirList.value?.clear()
-        val resultList = mutableListOf<HashMap<DirEntity, MutableList<Music>>>()
-        out@ for (music in list) {
-            val dir = music.dirName
-            for (item in resultList) {
-                //理论上这里只会有一个key
-                for (key in item.keys) {
-                    if (key.name == dir) {
-                        val mutableList = item[key]
-                        mutableList!!.add(music)
-                        //必须要remove，否则hashcode不一致
-                        item.remove(key)
-                        key.sum = key.sum!! + 1
-                        item.put(key, mutableList)
-                        continue@out
-                    }
-                }
-            }
-            //到此说明此文件夹不在列表，so add it
-            val dirEntity = DirEntity(dir, music.dirPath, 1)
-            val item = hashMapOf<DirEntity, MutableList<Music>>()
-            val musicList = mutableListOf<Music>()
-            musicList.add(music)
-            item.put(dirEntity, musicList)
-            resultList.add(item)
-        }
-        localDirList.value = resultList
-    }
-
+    /**
+     * 添加最近播放
+     */
     fun addRecentPlay(music: Music) {
         if (recentList.value?.contains(music) == false) {
             recentList.value?.add(0, music)
