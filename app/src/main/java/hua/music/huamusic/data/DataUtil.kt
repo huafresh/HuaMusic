@@ -1,5 +1,6 @@
 package hua.music.huamusic.data
 
+import android.widget.TextView
 import hua.music.huamusic.entitys.AlbumEntity
 import hua.music.huamusic.entitys.AuthorEntity
 import hua.music.huamusic.entitys.DirEntity
@@ -109,20 +110,6 @@ internal object DataUtil {
             resultList.add(item)
         }
         return resultList
-    }
-
-    /**
-     * 截取传入的字符串"/"后面的内容返回，如果传入的字符串最后一位是"/"，
-     * 那么会先忽略"/"
-     */
-    internal fun getSuffix(source: String): String {
-        return if (source.endsWith("/")) {
-            val splits = source.split("/")
-            splits[splits.size - 2]
-        } else{
-            val splits = source.split("/")
-            splits[splits.size - 1]
-        }
     }
 
 }

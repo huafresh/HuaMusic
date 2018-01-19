@@ -36,6 +36,12 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     //jackson(纯正的jar包不好下载，因此使用这个retrofit的版本，后续可能也会用得上)
     implementation 'com.squareup.retrofit2:converter-jackson:2.3.0'
+    //glide
+    //noinspection GradleDependency
+    compile "com.github.bumptech.glide:glide:3.7.0"
+    compile 'jp.wasabeef:glide-transformations:2.0.2'
+    //okhttp
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
 }
 
 repositories {

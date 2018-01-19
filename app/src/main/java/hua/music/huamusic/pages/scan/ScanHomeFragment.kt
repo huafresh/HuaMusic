@@ -2,6 +2,10 @@ package hua.music.huamusic.pages.scan
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -16,7 +20,7 @@ import kotterknife.bindView
  * @version 2018/1/11 9:43
  *
  */
-class ScanMusicFragment : BaseFragment() {
+class ScanHomeFragment : BaseFragment() {
     private val ivPhone: ImageView by bindView(R.id.iv_phone)
     private val ivSearch: ImageView by bindView(R.id.iv_search)
     private val btnWhole: Button by bindView(R.id.btn_whole)
@@ -25,7 +29,16 @@ class ScanMusicFragment : BaseFragment() {
     private val tvSetting: TextView by bindView(R.id.tv_setting)
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_scan_music
+        return R.layout.fragment_scan_home
+    }
+
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+         val view = super.onCreateView(inflater, container, savedInstanceState)
+        val parent = view?.parent
+        if (parent is View) {
+            parent.setBackgroundColor(resources.getColor(R.color.colorAccent))
+        }
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -35,7 +48,11 @@ class ScanMusicFragment : BaseFragment() {
 
     private fun setListeners() {
         btnWhole.setOnClickListener {
-            val intent = Intent(activity, ScanWholeActivity::class.java)
+            val list = arrayListOf(Environment.getExternalStorageDirectory().absolutePath)
+            val intent = Intent(activity, ScanActivity::class.java)
+            val arguments = Bundle()
+            arguments.putStringArrayList(ScanActivity.KEY_SCAN_PATH_LIST, list)
+            intent.putExtras(arguments)
             startActivity(intent)
         }
         btnCustom.setOnClickListener {

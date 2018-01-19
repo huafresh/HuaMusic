@@ -18,6 +18,7 @@ import hua.music.huamusic.entitys.AuthorEntity
 import hua.music.huamusic.entitys.Music
 import hua.music.huamusic.pages.adapters.AuthorListAdapter
 import hua.music.huamusic.pages.adapters.SingleSongAdapter
+import hua.music.huamusic.pages.scan.ScanHomeActivity
 import kotterknife.bindView
 
 /**
@@ -60,7 +61,7 @@ class AuthorFragment:Fragment() {
 
         }
         btnNoMusic.setOnClickListener {
-            val intent = Intent(activity, ScanActivity::class.java)
+            val intent = Intent(activity, ScanHomeActivity::class.java)
             startActivity(intent)
         }
     }

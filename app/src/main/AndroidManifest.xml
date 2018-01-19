@@ -14,27 +14,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
+        <activity android:name=".MainActivity"/>
+
         <activity
             android:name=".pages.local.LocalActivity"
             android:exported="false"/>
         <activity android:name=".pages.recent.RecentActivity"/>
         <activity android:name=".pages.down.DownActivity"/>
-        <activity android:name=".pages.local.ScanActivity"/>
 
         <activity
             android:name=".pages.play.PlayActivity"
             android:launchMode="singleTop"/>
-        <activity android:name=".pages.scan.ScanMusicActivity"/>
-        <activity android:name=".pages.scan.ScanWholeActivity"/>
+
+        <activity android:name=".pages.scan.ScanHomeActivity"/>
         <activity android:name=".pages.scan.ScanCustomActivity"/>
         <activity android:name=".pages.scan.ScanSettingActivity"/>
+        <activity android:name=".pages.scan.ScanActivity"/>
+        <activity android:name=".pages.play.downlrc.SelectLrcActivity"/>
 
         <service android:name=".service.MusicPlayerService"/>
 

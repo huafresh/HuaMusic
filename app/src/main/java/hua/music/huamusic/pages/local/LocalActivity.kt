@@ -1,8 +1,10 @@
 package hua.music.huamusic.pages.local
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.res.TypedArrayUtils.getString
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.Menu
@@ -11,6 +13,9 @@ import android.widget.Toast
 import hua.music.huamusic.R
 import hua.music.huamusic.base.BaseActivity
 import hua.music.huamusic.data.MusicLiveModel
+import hua.music.huamusic.pages.scan.ScanActivity
+import hua.music.huamusic.pages.scan.ScanHomeActivity
+
 import hua.music.huamusic.utils.CommonUtil
 
 /**
@@ -25,8 +30,6 @@ class LocalActivity : BaseActivity(), Toolbar.OnMenuItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MusicLiveModel.getInstance().scanLocalMusic(this.applicationContext)
-
         setObservers()
     }
 
@@ -52,7 +55,8 @@ class LocalActivity : BaseActivity(), Toolbar.OnMenuItemClickListener {
                 Toast.makeText(this, "search", Toast.LENGTH_SHORT).show()
             }
             R.id.scan -> {
-                Toast.makeText(this, "scan", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, ScanHomeActivity::class.java)
+                startActivity(intent)
             }
             R.id.order -> {
                 Toast.makeText(this, "order", Toast.LENGTH_SHORT).show()

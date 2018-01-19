@@ -58,6 +58,7 @@ open class BaseActivity : AppCompatActivity() {
             content = onCreateFragment()
         }
         if (content != null) {
+            content.arguments = intent.extras
             supportFragmentManager.beginTransaction()
                     .add(R.id.fl_content, content)
                     .commit()
@@ -94,5 +95,27 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
+    private val mOnBackPressListeners = mutableListOf<OnBackPressListener>()
+
+    interface OnBackPressListener {
+        /**
+         * 返回键点击时调用
+         * @return 如果为true，将消费返回事件
+         */
+        fun onBackPress():Boolean
+    }
+
+    fun addOnBackPressListener(listener: OnBackPressListener) {
+        mOnBackPressListeners.add(listener)
+    }
+
+    override fun onBackPressed() {
+        mOnBackPressListeners.forEach {
+            if (it.onBackPress()) {
+                return
+            }
+        }
+        super.onBackPressed()
+    }
 
 }

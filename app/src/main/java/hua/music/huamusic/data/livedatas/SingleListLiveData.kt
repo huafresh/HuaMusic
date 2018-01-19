@@ -22,7 +22,7 @@ import io.reactivex.schedulers.Schedulers
  *
  */
 @SuppressLint("Recycle")
-class MusicListLiveData : MutableLiveData<List<Music>>() {
+class SingleListLiveData : MutableLiveData<List<Music>>() {
 
     companion object {
         val KEY_STORE_SINGLE_SONG = "key_single_song"
@@ -49,7 +49,7 @@ class MusicListLiveData : MutableLiveData<List<Music>>() {
                 .flatMap(Function<String, Flowable<List<Music>>> {
                     var list = emptyList<Music>()
                     if (!TextUtils.isEmpty(it)) {
-                        list = JsonParseUtil.parseJsonToList(it, Music::class.java)?: emptyList()
+                        list = JsonParseUtil.parseJsonToList(it, Music::class.java) ?: emptyList()
                     }
                     Flowable.just(list)
                 })
@@ -102,4 +102,15 @@ class MusicListLiveData : MutableLiveData<List<Music>>() {
         return list
     }
 
+    /**
+     * 判断单曲列表中是否存在对于给定的[path]的歌曲
+     */
+    fun isExist(path: String): Boolean {
+        value?.forEach {
+            if (it.filePath == path) {
+                return true
+            }
+        }
+        return false
+    }
 }

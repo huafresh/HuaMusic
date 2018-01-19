@@ -4,18 +4,24 @@ import android.app.Service
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.support.constraint.ConstraintLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import hua.music.huamusic.R
 import hua.music.huamusic.entitys.Music
 import hua.music.huamusic.service.EventListener
 import hua.music.huamusic.service.MusicPlayerService
 import hua.music.huamusic.utils.CommonUtil
+import jp.wasabeef.glide.transformations.BlurTransformation
 import kotterknife.bindView
 
 /**
@@ -26,7 +32,7 @@ import kotterknife.bindView
  *
  */
 class PlayActivity : AppCompatActivity(), View.OnClickListener, EventListener {
-
+    private val ivBackground: ImageView by bindView(R.id.iv_background)
     private val viewHeader: View by bindView(R.id.view_header)
     private val bacBack: View by bindView(R.id.bac_back)
     private val ivBack: ImageView by bindView(R.id.iv_back)
@@ -57,8 +63,21 @@ class PlayActivity : AppCompatActivity(), View.OnClickListener, EventListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_play)
 
+        initStatusBar()
         bindPlayService()
         setListeners()
+    }
+
+    private fun initStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.statusBarColor = Color.TRANSPARENT
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            CommonUtil.setStatusBarTranslucent(this)
+        }
     }
 
     override fun onDestroy() {
@@ -107,6 +126,10 @@ class PlayActivity : AppCompatActivity(), View.OnClickListener, EventListener {
 
     private fun refreshPageWithCurMusic() {
         val music = mPlayBinder?.getCurMusic()
+        Glide.with(this)
+                .load(R.drawable.test_cover2)
+                .bitmapTransform(BlurTransformation(this,25,5))
+                .into(ivBackground)
         tvTitle.text = music?.title ?: getString(R.string.default_title)
         tvAuthor.text = music?.author ?: getString(R.string.default_author)
         tvTimeTotal.text = "${music?.duration ?: getString(R.string.default_time)}"
@@ -139,7 +162,7 @@ class PlayActivity : AppCompatActivity(), View.OnClickListener, EventListener {
             R.id.iv_play -> {
                 if (mPlayBinder?.isPlaying() == true) {
                     mPlayBinder?.pause()
-                } else{
+                } else {
                     mPlayBinder?.start()
                 }
             }

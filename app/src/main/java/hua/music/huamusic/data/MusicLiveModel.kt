@@ -6,7 +6,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.content.Context
-import hua.music.huamusic.data.livedatas.MusicListLiveData
+import hua.music.huamusic.data.livedatas.SingleListLiveData
 import hua.music.huamusic.data.livedatas.ScanFilterDirLiveData
 import hua.music.huamusic.entitys.*
 import hua.music.huamusic.storage.StorageManager
@@ -43,7 +43,7 @@ class MusicLiveModel private constructor() : ViewModel() {
     /**
      * 本地音乐单曲列表
      */
-    val singleSongList: MusicListLiveData = MusicListLiveData()
+    val singleSongList: SingleListLiveData = SingleListLiveData()
     /**
      * 本地音乐歌手列表
      */
@@ -77,10 +77,10 @@ class MusicLiveModel private constructor() : ViewModel() {
      */
     val scanFilterList: ScanFilterDirLiveData = ScanFilterDirLiveData()
 
-    /**
-     * 外部存储文件夹列表，自定义扫描中使用
-     */
-    val externalDirList: MutableLiveData<MutableList<ExternalDirEntity>> = MutableLiveData()
+//    /**
+//     * 外部存储文件夹列表，自定义扫描中使用
+//     */
+//    val externalDirList: MutableLiveData<MutableList<ExternalDirEntity>> = MutableLiveData()
 
     /**
      * toast
@@ -121,22 +121,6 @@ class MusicLiveModel private constructor() : ViewModel() {
      */
     fun scanMusic(context: Context) {
         singleSongList.scanLocalMusic(context)
-    }
-
-    /**
-     * 获取可以设置扫描过滤的目录。
-     * 所谓可以设置扫描过滤的目录是指该目录下存在音频文件，
-     * 如果存在音乐文件，那么该目录默认选中；否则默认不选中
-     */
-    fun getFilterDirList(context: Context) {
-        DataSourceImpl.getInstance().getFilterDirList(context)
-    }
-
-    /**
-     * 获取外部存储文件夹列表
-     */
-    fun getExternalDirList() {
-        DataSourceImpl.getInstance().getExternalDirList()
     }
 
     /**

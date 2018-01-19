@@ -9,7 +9,7 @@
         android:id="@+id/view_top"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@android:color/white"/>
+        android:background="?android:selectableItemBackground"/>
 
     <ImageView
         android:id="@+id/iv_dir_back"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="@id/view_top"/>
 
     <TextView
-        android:id="@+id/tv_current_path"
+        android:id="@+id/tv_current_parent_path"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"

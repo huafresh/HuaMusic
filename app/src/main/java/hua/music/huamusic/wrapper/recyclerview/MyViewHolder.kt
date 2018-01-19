@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SwitchCompat
 import android.util.SparseArray
 import android.view.View
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 
@@ -68,6 +69,14 @@ class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val switchCompat = getView<SwitchCompat>(id)
         if (switchCompat != null) {
             switchCompat.isSelected = onOff
+        }
+        return this
+    }
+
+    fun setChecked(@IdRes id: Int, checked: Boolean) :MyViewHolder{
+        val checkBox = getView<CheckBox>(id)
+        if (checkBox != null) {
+            checkBox.isChecked = checked
         }
         return this
     }

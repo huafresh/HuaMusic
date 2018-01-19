@@ -3,6 +3,7 @@ package hua.music.huamusic.base
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,8 @@ abstract class BaseFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         if (mView == null) {
             mView = inflater?.inflate(getLayoutId(), container, false)
+            val params = mView?.layoutParams
+            Log.e("@@@hua","${params?.width},${params?.height},${mView?.width}")
         }
         return mView
     }

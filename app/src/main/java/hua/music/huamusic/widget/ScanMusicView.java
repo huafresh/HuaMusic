@@ -1,8 +1,10 @@
 package hua.music.huamusic.widget;
 
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -29,7 +31,6 @@ import hua.music.huamusic.R;
 /**
  * 网易音乐扫描音乐控件。
  * 效果是一个手机加一个放大镜，同时还有上下扫描的动画。
- * 这个控件只能用网易的那个手机图片，使用其他图片结果不可预知。
  *
  * @author hua
  * @version 2018/1/5 16:48
@@ -39,11 +40,12 @@ public class ScanMusicView extends View {
 
     private int mCurScanState = SCAN_STATE_NORMAL;
     public static final int SCAN_STATE_NORMAL = 0;
-
     public static final int SCAN_STATE_SCANNING = 1;
+    public static final int SCAN_STATE_COMPLETE = 2;
 
     private Bitmap mPhoneScaledBitmap;
     private Bitmap mSearchScaledBitmap;
+    private Bitmap mCompleteBitmap;
 
     private ShaderAnimRunnable mShaderAnimRunnable;
 
@@ -71,13 +73,30 @@ public class ScanMusicView extends View {
         mPhonePaint.setAntiAlias(true);
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ScanMusicView);
-        Drawable mPhoneDrawable = array.getDrawable(R.styleable.ScanMusicView_src_phone);
         float mScalePhone = array.getFloat(R.styleable.ScanMusicView_scale_phone, 1.0f);
-        mPhoneScaledBitmap = drawableToBitmap(mPhoneDrawable, mScalePhone);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = (int) (1 / mScalePhone);
+        mPhoneScaledBitmap = BitmapFactory.decodeResource(context.getResources(),
+                R.drawable.scan_music_phone, options);
 
         Drawable mSearchDrawable = array.getDrawable(R.styleable.ScanMusicView_src_search);
         float mScaleSearch = array.getFloat(R.styleable.ScanMusicView_scale_search, 1.0f);
         mSearchScaledBitmap = drawableToBitmap(mSearchDrawable, mScaleSearch);
+        if (mSearchScaledBitmap == null) {
+            options.inSampleSize = 2;
+            mSearchScaledBitmap = BitmapFactory.decodeResource(context.getResources(),
+                    R.drawable.scan_music_search, options);
+        }
+
+        Drawable completeDrawable = array.getDrawable(R.styleable.ScanMusicView_src_complete);
+        float completeScale = array.getFloat(R.styleable.ScanMusicView_scale_complete, 1.0f);
+        mCompleteBitmap = drawableToBitmap(completeDrawable, completeScale);
+        if (mCompleteBitmap == null) {
+            options.inSampleSize = 2;
+            mCompleteBitmap = BitmapFactory.decodeResource(context.getResources(),
+                    R.drawable.scan_music_complete, options);
+        }
+
         array.recycle();
 
         resolvePhoneImage(mPhoneScaledBitmap);
@@ -231,8 +250,16 @@ public class ScanMusicView extends View {
             mShaderAnimRunnable.drawShader(mTempCanvas);
         }
 
-        if (mSearchAnimRunnable != null) {
-            mSearchAnimRunnable.drawSearch(canvas);
+        if (mCurScanState == SCAN_STATE_COMPLETE) {
+            if (mCompleteBitmap != null) {
+                canvas.drawBitmap(mCompleteBitmap,
+                        getWidth() / 2 - mCompleteBitmap.getWidth() / 2,
+                        getHeight() / 2 - mCompleteBitmap.getHeight() / 2, mPhonePaint);
+            }
+        } else {
+            if (mSearchAnimRunnable != null) {
+                mSearchAnimRunnable.drawSearch(canvas);
+            }
         }
 
         canvas.drawBitmap(mCanvasBitmap, 0, 0, mPhonePaint);
@@ -263,6 +290,19 @@ public class ScanMusicView extends View {
                 mShaderAnimRunnable != null &&
                 mSearchAnimRunnable != null) {
             mCurScanState = SCAN_STATE_NORMAL;
+            mShaderAnimRunnable.stop();
+            mSearchAnimRunnable.stop();
+        }
+    }
+
+    /**
+     * 扫描完成
+     */
+    public void complete() {
+        if (mCurScanState == SCAN_STATE_SCANNING &&
+                mShaderAnimRunnable != null &&
+                mSearchAnimRunnable != null) {
+            mCurScanState = SCAN_STATE_COMPLETE;
             mShaderAnimRunnable.stop();
             mSearchAnimRunnable.stop();
         }
@@ -456,7 +496,6 @@ public class ScanMusicView extends View {
 
         private void stop() {
             resetSearchPosition();
-            ScanMusicView.this.invalidate();
             removeAnim();
         }
 
@@ -504,6 +543,7 @@ public class ScanMusicView extends View {
 
         private void removeAnim() {
             ScanMusicView.this.removeCallbacks(this);
+            ScanMusicView.this.invalidate();
         }
     }
 

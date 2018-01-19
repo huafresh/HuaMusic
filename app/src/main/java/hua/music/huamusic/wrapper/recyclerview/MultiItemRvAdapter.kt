@@ -29,11 +29,9 @@ abstract class MultiItemRvAdapter<T>(private val mContext: Context)
      * 设置适配器数据源
      * @param list 适配器数据源
      */
-    fun setDataList(list: List<T>?) {
-        if (list != null) {
-            mDataList.clear()
-            mDataList.addAll(list)
-        }
+    fun setDataList(list: List<T>) {
+        mDataList.clear()
+        mDataList.addAll(list)
     }
 
     /**

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+
+    <hua.music.huamusic.widget.ScanMusicView
+        android:id="@+id/scan_music"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_complete_prefix"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/scan_complete_prefix"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/tv_complete_sum"
+        app:layout_constraintTop_toBottomOf="@id/scan_music"/>
+
+    <TextView
+        android:id="@+id/tv_complete_sum"
+        android:layout_width="wrap_content"
+        android:visibility="invisible"
+        android:layout_height="wrap_content"
+        android:text="0首"
+        android:textColor="@color/color_theme"
+        app:layout_constraintBottom_toBottomOf="@id/tv_complete_prefix"
+        app:layout_constraintLeft_toRightOf="@id/tv_complete_prefix"
+        app:layout_constraintRight_toLeftOf="@+id/tv_complete_suffix"
+        app:layout_constraintTop_toTopOf="@id/tv_complete_prefix"/>
+
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/tv_complete_suffix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/scan_complete_suffix"
+        app:layout_constraintBottom_toBottomOf="@id/tv_complete_prefix"
+        app:layout_constraintLeft_toRightOf="@id/tv_complete_sum"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_complete_prefix"/>
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="30dp"
+        android:text="@string/scan_cancel"
+        android:background="@drawable/selector_button_solid"
+        app:layout_constraintTop_toBottomOf="@id/tv_complete_prefix"/>
+
+    <Button
+        android:id="@+id/btn_retry"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="30dp"
+        android:text="@string/scan_retry"
+        android:background="@drawable/selector_button_solid"
+        app:layout_constraintTop_toBottomOf="@id/tv_complete_prefix"/>
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/btn_back"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="30dp"
+        android:text="@string/scan_back"
+        android:background="@drawable/selector_button_solid"
+        app:layout_constraintTop_toBottomOf="@id/tv_complete_prefix"/>
+
+</android.support.constraint.ConstraintLayout>

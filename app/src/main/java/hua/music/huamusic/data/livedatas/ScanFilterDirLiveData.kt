@@ -14,7 +14,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 /**
- * 扫描设置过滤目录列表
+ * 可以设置是否过滤的目录列表
+ * 所谓可以设置是否过滤的目录是指该目录下存在mp3文件，
+ * 如果存在音乐文件，那么该目录默认选中；否则默认不选中
  *
  * @author hua
  * @version 2018/1/12 13:44

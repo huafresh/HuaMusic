@@ -1,31 +1,35 @@
 package hua.music.huamusic.pages.scan
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import hua.music.huamusic.R
 import hua.music.huamusic.base.BaseActivity
 
 /**
- *
- * 扫描设置页面
+ * 真正的扫描界面
  *
  * @author hua
- * @version 2018/1/11 11:03
+ * @version 2018/1/15 11:08
  *
  */
-class ScanSettingActivity : BaseActivity(), Toolbar.OnMenuItemClickListener {
+class ScanActivity : BaseActivity(), Toolbar.OnMenuItemClickListener {
+
+    companion object {
+        val KEY_SCAN_PATH_LIST = "key_scan_path_list"
+    }
+
     override fun initToolBar(toolbar: Toolbar) {
         super.initToolBar(toolbar)
-
-        toolbar.setTitle(R.string.scan_setting_title)
-        toolbar.inflateMenu(R.menu.menu_scan_setting)
+        toolbar.inflateMenu(R.menu.menu_scan)
         toolbar.setOnMenuItemClickListener(this)
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         return when (item?.itemId) {
-            R.id.scan_setting_confirm -> {
+            R.id.scan_close -> {
                 finish()
                 true
             }
@@ -36,7 +40,7 @@ class ScanSettingActivity : BaseActivity(), Toolbar.OnMenuItemClickListener {
     }
 
     override fun onCreateFragment(): Fragment? {
-        return ScanSettingFragment()
+        return ScanFragment()
     }
 
 }

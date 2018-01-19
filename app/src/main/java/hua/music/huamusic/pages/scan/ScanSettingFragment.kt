@@ -53,7 +53,6 @@ class ScanSettingFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         initViews()
         setListeners()
         addObservers()
@@ -68,8 +67,8 @@ class ScanSettingFragment : BaseFragment() {
         val dataList = mAdapter.getDataList()
         for (i in 0 until dataList.size) {
             val entity = dataList[i]
-            val dirPath = entity.dirParentPath + entity.dirName
-            if (entity.isSelected == true) {
+            val dirPath = entity.dirPath
+            if (entity.isSelected) {
                 selectedBuilder.append(dirPath)
                 if (i != dataList.size - 1) {
                     selectedBuilder.append(";")
@@ -81,7 +80,6 @@ class ScanSettingFragment : BaseFragment() {
                 }
             }
         }
-        MusicLiveModel.getInstance().scanFilterList.value?.addAll(mAdapter.getDataList())
     }
 
     private fun initViews() {
@@ -92,6 +90,7 @@ class ScanSettingFragment : BaseFragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.addItemDecoration(LinearItemDecoration(activity))
         mAdapter = ScanSettingAdapter(activity)
+        recyclerView.adapter = mAdapter
     }
 
     private fun setListeners() {
@@ -103,7 +102,6 @@ class ScanSettingFragment : BaseFragment() {
     }
 
     private fun addObservers() {
-        MusicLiveModel.getInstance().getFilterDirList(activity)
         MusicLiveModel.getInstance().scanFilterList.observe(this, Observer {
             if (it != null) {
                 mAdapter.setDataList(it)
@@ -113,7 +111,7 @@ class ScanSettingFragment : BaseFragment() {
         })
     }
 
-    private fun changeSelectedState(list: MutableList<SelectableDirEntity>) {
+    private fun changeSelectedState(list: List<SelectableDirEntity>) {
         val selectedPath = StorageManager.getInstance.getFromDisk(SCAN_SETTING_SELECTED_DIR_PATH)
         val unSelectedPath = StorageManager.getInstance.getFromDisk(SCAN_SETTING_UNSELECTED_DIR_PATH)
         val selectedSplits = selectedPath?.split(";") ?: return
@@ -121,12 +119,12 @@ class ScanSettingFragment : BaseFragment() {
 
         list.forEach {
             selectedSplits.filter { split ->
-                it.dirParentPath + it.dirName == split
+                it.dirPath == split
             }.forEach { split ->
                 it.isSelected = true
             }
             unSelectedSplits.filter { split ->
-                it.dirParentPath + it.dirName == split
+                it.dirPath == split
             }.forEach { split ->
                 it.isSelected = false
             }

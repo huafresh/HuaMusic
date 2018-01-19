@@ -185,7 +185,6 @@ class HomeFragment : Fragment() {
 
     private fun setObservers() {
         swipeRefreshLayout.isRefreshing = true
-        MusicLiveModel.getInstance().scanLocalMusic(activity.applicationContext)
 
         MusicLiveModel.getInstance().singleSongList.observe(this, Observer {
             val dataList = mMenuAdapter.getDataList()
@@ -236,6 +235,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun refreshPage() {
-        MusicLiveModel.getInstance().scanLocalMusic(activity.applicationContext)
+        MusicLiveModel.getInstance().singleSongList.scanLocalMusic(activity)
     }
 }

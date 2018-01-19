@@ -2,35 +2,19 @@ package hua.music.huamusic.utils
 
 import android.app.Activity
 import android.content.Context
-import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Build
 import android.support.annotation.ColorRes
 import android.support.annotation.DrawableRes
-import android.support.annotation.IdRes
 import android.support.annotation.RequiresApi
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
 import android.support.v4.graphics.drawable.DrawableCompat
-import android.support.v7.app.AppCompatActivity
-import android.text.TextUtils
-import android.util.DisplayMetrics
-import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import hua.music.huamusic.R
-
-import java.util.regex.Matcher
-import java.util.regex.Pattern
+import android.widget.TextView
 
 /**
  * 通用工具类，聚集常用工具方法
@@ -39,6 +23,20 @@ import java.util.regex.Pattern
  * @date 2017/6/8
  */
 object CommonUtil {
+
+    /**
+     * 截取传入的字符串最后一个"/"后面的内容返回，如果传入的字符串最后一位是"/"，
+     * 那么会先忽略"/"。此方法的作用是获取文件名或者文件夹名
+     */
+    fun getSuffix(source: String): String {
+        return if (source.endsWith("/")) {
+            val splits = source.split("/")
+            splits[splits.size - 2]
+        } else {
+            val splits = source.split("/")
+            splits[splits.size - 1]
+        }
+    }
 
     /**
      * 功能：把毫秒值转换为形如，03:45 的字符串
@@ -120,7 +118,7 @@ object CommonUtil {
      *
      * @param activity Activity
      */
-    private fun setStatusBarTranslucent(activity: Activity) {
+    fun setStatusBarTranslucent(activity: Activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             val window = activity.window
             val lp = window.attributes

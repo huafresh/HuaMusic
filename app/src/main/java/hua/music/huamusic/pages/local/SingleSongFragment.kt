@@ -21,6 +21,7 @@ import hua.music.huamusic.R
 import hua.music.huamusic.data.MusicLiveModel
 import hua.music.huamusic.pages.adapters.SingleSongAdapter
 import hua.music.huamusic.pages.play.PlayActivity
+import hua.music.huamusic.pages.scan.ScanHomeActivity
 import hua.music.huamusic.service.MusicPlayerService
 import hua.music.huamusic.storage.StorageManager
 import hua.music.huamusic.utils.JsonParseUtil
@@ -94,7 +95,7 @@ class SingleSongFragment : Fragment() {
             }
         }
         btnNoMusic.setOnClickListener {
-            val intent = Intent(activity, ScanActivity::class.java)
+            val intent = Intent(activity, ScanHomeActivity::class.java)
             startActivity(intent)
         }
     }
